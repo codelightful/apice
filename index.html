@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Alux Framework</title>
+    <link rel="stylesheet" type="text/css" href="./src/alux.css"/>
+    <script type="text/javascript" src="./dist/alux.min.js"></script>
+    <script type="text/javascript">
+        Alux.ready(function() {
+            Alux.fragment.register('navigation', './fragments/navigation.html').serve('body').then(function(response) {
+                return 'xxx';
+            }).catch(function(err) {
+                err.render('body');
+            });
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>

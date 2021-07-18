@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500&display=swap');
+
+* {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 300;
+}
+
+body {
+    margin: 0;
+}
+
+/* Navigation bar with a dark accent */
+nav.dark {
+    background-color: #3d3d3d;
+    color: #fefefe;
+}
+nav > h1 {
+    margin: 0;
+}
+
+/*===========================================================================*/
+/* BADGES */
+/*===========================================================================*/
+/* Box style message that consumes all the available horizontal space */
+.badge {
+    border-radius: 8px;
+    padding: 8px;
+}
+
+/* Header inside a badge */
+.badge > .header {
+    font-weight: 400;
+    font-size: 1.2rem;
+}
+
+/* Badge with an error message */
+.badge-error {
+    background-color: #ffebee;
+    border: solid 1px #ff4444;    
+    color: #cc0000;
+}
+
+/* Badge with a warning message */
+.badge-warn {
+    background-color: #fff8e1;
+    border: solid 1px #ff8800;    
+    color: #e65100;
+}
+
+/* Badge with an informational message */
+.badge-info {
+    background-color: #e3f2fd;
+    border: solid 1px #4285f4;    
+    color: #1a237e;
+}
+
+/* Badge with a success message */
+.badge-success {
+    background-color: #e8f5e9;
+    border: solid 1px #007e33;    
+    color: #1b5e20;
+}
