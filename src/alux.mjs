@@ -20,18 +20,34 @@ export function version() {
     return 'v' + $scope.version.major + '.' + $scope.version.minor + '.' + $scope.version.patch;
 };
 
-import logger from './logger.mjs';
-import events from './events.mjs';
-import cookies from './cookies.mjs';
-import http from './http.mjs';
-import fragment from './fragment.mjs';
+import log from './logging';
+import util from './util';
+import cookies from './cookies';
+import http from './http';
+import controller from './controller';
+import fragment from './fragment';
+import router from './router';
+import errorHandler from './errorHandler';
 
 /**
  * Adds a function to be executed when the framework has completed the loading process
- * @param callback Function to be invoked once the framework is ready
+ * @param fnc Function to be invoked once the framework is ready
  */
-export function ready(callback) {
-    events.on('ready', callback);
+export function ready(fnc) {
+    util.events.onReady(fnc);
 };
 
-export { logger, events, cookies, http, fragment };
+/**
+ * Captures an unhandled promise and process any error rendering it to the UI and logging the cause
+ * @param promise Promise to handle
+ */
+export function handle(promise) {
+    if(!util.isPromise(promise)) {
+        throw Error('alux.handle_promise.invalid_promise');
+    }
+    promise.catch((err) => {
+        errorHandler.render(err);
+    });
+};
+
+export { log, util, cookies, http, controller, fragment, router };

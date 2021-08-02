@@ -3,17 +3,22 @@
 <head>
     <title>Alux Framework</title>
     <link rel="stylesheet" type="text/css" href="./src/alux.css"/>
+    <link rel="stylesheet" type="text/css" href="./site/css/alux-samples.css"/>
     <script type="text/javascript" src="./dist/alux.min.js"></script>
+    <script type="text/javascript" src="./site/scripts/controllers.js"></script>
+    <script type="text/javascript" src="./site/scripts/fragments.js"></script>
+    <script type="text/javascript" src="./site/scripts/routes.js"></script>
     <script type="text/javascript">
         Alux.ready(function() {
-            Alux.fragment.register('navigation', './fragments/navigation.html').serve('body').then(function(response) {
-                return 'xxx';
-            }).catch(function(err) {
+            Alux.fragment('layout').serve('body', true).then(() => {
+                //Alux.router.start();
+            }).catch((err) => {
                 err.render('body');
             });
         });
     </script>
 </head>
 <body>
+    Loading.. please wait
 </body>
 </html>

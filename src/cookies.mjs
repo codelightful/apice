@@ -1,8 +1,6 @@
 const $module = {};
 
-function trim(text) {
-    return text.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
-}
+import util from './util.mjs';
 
 /**
  * Sets a specific cookie
@@ -18,7 +16,7 @@ $module.set = function(name, value, timespan) {
     }
     const expireDate = new Date();
     expireDate.setTime(expireDate.getTime() + (timespan * 1000));
-    var cookie = trim(name) + '=' + value + '; expires=' + expireDate.toGMTString() + '; path=/';
+    var cookie = util.trim(name) + '=' + value + '; expires=' + expireDate.toGMTString() + '; path=/';
     document.cookie = cookie;
 };
 
@@ -34,12 +32,12 @@ $module.get = function(name) {
     const cookieArray = document.cookie.split(';');
     var cookieValue = null;
     for(var idx=0; idx < cookieArray.length; idx++) {
-        const rawCookie = trim(cookieArray[idx]);
+        const rawCookie = util.trim(cookieArray[idx]);
         if(!rawCookie) {
             continue;
         }
         const cookieParts = rawCookie.split('=');
-        if(trim(cookieParts[0]) !== name) {
+        if(util.trim(cookieParts[0]) !== name) {
             continue;
         }
         return cookieParts[1];

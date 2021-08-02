@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500&display=swap');
+
+* {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 300;
+}
+
+body {
+    margin: 0;
+    background-color: #EAF3FA;
+}
+
+/* Navigation bar with a dark accent */
+nav.dark {
+    background-color: #7D65F5;
+    color: #fefefe;
+    padding: 10px;
+}
+nav > h1 {
+    margin: 0;
+}
