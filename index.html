@@ -11,7 +11,7 @@
     <script type="text/javascript">
         Alux.ready(function() {
             Alux.fragment('layout').serve('body', true).then(() => {
-                //Alux.router.start();
+                Alux.router.target('#contentArea').start();
             }).catch((err) => {
                 err.render('body');
             });

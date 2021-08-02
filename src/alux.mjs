@@ -28,6 +28,7 @@ import controller from './controller';
 import fragment from './fragment';
 import router from './router';
 import errorHandler from './errorHandler';
+import ui from './components/ui';
 
 /**
  * Adds a function to be executed when the framework has completed the loading process
@@ -50,4 +51,4 @@ export function handle(promise) {
     });
 };
 
-export { log, util, cookies, http, controller, fragment, router };
+export { log, util, cookies, http, controller, fragment, router, errorHandler, ui };

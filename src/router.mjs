@@ -5,10 +5,15 @@ const $scope = {};
 $scope.routes = [];
 // holds the reference to the default route if any
 $scope.defaultRoute = null;
+// holds the reference to the route that will be served when there is not default route and a pattern is not matched
+$scope.notFoundRoute = null;
+// Reference to the target element that receives the routing of fragments
+$scope.target = null;
 
-import util from './util.mjs';
-import errorHandler from './errorHandler.mjs';
-import log from './logging.mjs';
+import util from './util';
+import fragment from './fragment';
+import errorHandler from './errorHandler';
+import log from './logging';
 const logger = log.getLogger($moduleName);
 
 /**
@@ -18,34 +23,30 @@ const logger = log.getLogger($moduleName);
 function onHashChange(eventName) {
     logger.debug('Hash change triggered. event=' + eventName);
     const hash = $module.hash();
-    const route = $module.match(hash);
-    if(route) {
+    var route = $module.match(hash);
+    if (route) {
         logger.debug('Serving route: ' + route.pattern);
-    } else if(!$scope.defaultRoute) {
+    } else if ($scope.defaultRoute && (!hash || !$scope.notFoundRoute)) {
+        if (hash) {
+            logger.warn('Route not found. Serving default hash=' + hash);
+        } else {
+            logger.debug('No hash found. Serving default router');
+        }
+        route = $scope.defaultRoute;
+    } else if ($scope.notFoundRoute) {
         // TODO: define actions when there is no matching route and default hash is not defined
-        errorHandler.render({ module: $moduleName, code: 'alux.router.no_matching_no_default'});
+        logger.warn('Route not found. hash=' + hash + ' route=' + $scope.notFoundRoute.pattern);
+        route = $scope.notFoundRoute;
     } else {
-        logger.debug('Serving default route: ' + $scope.defaultRoute.pattern);
-        $scope.defaultRoute.serve();
+        errorHandler.render({
+            module: $moduleName,
+            message: 'The requested resource was not found: ' + hash,
+            code: 'alux.router.no_matching_no_default'
+        });
+        return;
     }
+    route.serve(hash);
 }
-
-/**
- * Initializes the execution of the routing engine
- */
-$module.start = function () {
-    logger.debug('Starting Alux router');
-    util.events.addListener(window, 'hashchange', () => {
-        onHashChange('hashchange');
-    });
-    util.events.addListener(window, 'popstate', () => {
-        onHashChange('popstate');
-        return false;
-    });
-    util.events.onReady(() => {
-        onHashChange('routerstart');
-    });
-};
 
 /**
  * Class representing a hash that allows to parse it and evaluate its parts
@@ -53,13 +54,27 @@ $module.start = function () {
 class RouteHash {
     #pattern
     #parts
+    #parameters
 
     constructor(pattern) {
         if (!pattern || typeof (pattern) !== 'string') {
             throw Error('alux.router.hah.invalid_pattern');
         }
         this.#pattern = pattern;
-        this.#parts = this.#pattern.split('/');
+        this.#parse();
+    }
+
+    #parse() {
+        this.#parts = [];
+        this.#parameters = [];
+        var parts = this.#pattern.split('/');
+        for (var idx = 0; idx < parts.length; idx++) {
+            var section = parts[idx];
+            if(section.startsWith(':')) {
+                this.#parameters.push(section.substr(1));
+            }
+            this.#parts.push(section);
+        }
     }
 
     get pattern() {
@@ -68,6 +83,10 @@ class RouteHash {
 
     get count() {
         return this.#parts.length;
+    }
+
+    get hasParameters() {
+        return this.#parameters.length > 0;
     }
 }
 
@@ -103,15 +122,31 @@ class AluxRoute {
         $scope.defaultRoute = this;
     }
 
-    serve() {
-        if(typeof(this.#action) === 'function') {
+    asNotFound() {
+        $scope.notFoundRoute = this;
+    }
+
+    match(hash) {
+        if (!this.#routeHash.hasParameters) {
+            return hash === this.#routeHash.pattern;
+        }
+        // QUEDE AQUI IMPLEMENTANDO EL ALGORITMO DE HASHING
+        return false;
+    }
+
+    serve(hash) {
+        if (typeof (this.#action) === 'function') {
             try {
-                this.#action();
-            } catch(err) {
-                logger.error('alux.router.action_error[' + this.pattern + ']', err);
+                this.#action(hash);
+            } catch (err) {
+                logger.error('alux.router.action_error[' + this.pattern + '|' + hash + ']', err);
             }
-        } else if(typeof(this.#action.serve) === 'function') {
+        } else if (fragment.isFragment(this.#action)) {
+            this.#action.serve($scope.target);
+        } else if (typeof (this.#action.serve) === 'function') {
             this.#action.serve();
+        } else {
+            throw Error('aux.route.invalid_action[' + this.pattern + ']');
         }
     }
 }
@@ -133,11 +168,16 @@ $module.register = function (pattern, action) {
  * @param route String with the route path to match
  * @returns Route instance that matches the path or null if nothing matches the path
  */
-$module.match = function (route) {
-    if (!route || typeof (route) !== 'string') {
+$module.match = function (hash) {
+    if (!hash || typeof (hash) !== 'string') {
         return null;
     }
-    // QUEDE AQUI IMPLEMENTANDO ESTE METODO
+    for (var idx = 0; idx < $scope.routes.length; idx++) {
+        var route = $scope.routes[idx];
+        if (route.match(hash) === true) {
+            return route;
+        }
+    }
     return null;
 };
 
@@ -152,5 +192,51 @@ $module.hash = function () {
     }
     return hash;
 }
+
+/**
+ * Initializes the execution of the routing engine
+ */
+$module.start = function () {
+    logger.debug('Starting Alux router');
+    util.events.addListener(window, 'hashchange', () => {
+        onHashChange('hashchange');
+    });
+    util.events.addListener(window, 'popstate', () => {
+        onHashChange('popstate');
+        return false;
+    });
+    util.events.onReady(() => {
+        onHashChange('routerstart');
+    });
+    return $module;
+};
+
+/**
+ * Gets or sets the target element that will receive the content of any route associated with a fragment.  This method
+ * is polymorphic. When no argument is provided returns the current target.
+ * @param selector String with the selector of the target or reference to the DOM element that will receive the
+ *                  content of any route that contains a fragment. When this is not provided the method will return
+ *                  the selected target.
+ * @returns When no selector is provided this method returns the defined target.
+ */
+$module.target = function () {
+    if (arguments.length === 0) {
+        if (!$scope.target) {
+            return document.body;
+        }
+        return $scope.target;
+    }
+    var selector = arguments[0];
+    if (!selector) {
+        $scope.target = document.body;
+        return $module;
+    }
+    $scope.target = util.element(selector);
+    if (!$scope.target) {
+        logger.error('alux.router.target_not_found[' + selector + ']');
+        $scope.target = document.body;
+    }
+    return $module;
+};
 
 export default $module;

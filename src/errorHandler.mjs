@@ -112,12 +112,12 @@ $module.render = function() {
     if(arguments.length === 1) {
         err = arguments[0];
     } else if(arguments.length === 2) {
-        err = arguments[1];
         selector = arguments[0];
+        err = arguments[1];
     }
     if(!err) {
         return;
-    } else if(!err instanceof ErrorHandler) {
+    } else if(!(err instanceof ErrorHandler)) {
         err = new ErrorHandler(err);
     }
     err.render(selector);
