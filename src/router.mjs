@@ -141,6 +141,8 @@ class AluxRoute {
             } catch (err) {
                 logger.error('alux.router.action_error[' + this.pattern + '|' + hash + ']', err);
             }
+        } else if(typeof(this.#action) === 'string') {
+            fragment(this.#action).serve($scope.target);
         } else if (fragment.isFragment(this.#action)) {
             this.#action.serve($scope.target);
         } else if (typeof (this.#action.serve) === 'function') {

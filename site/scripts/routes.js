@@ -19,3 +19,7 @@ Alux.router.register('component/toast', function() {
         err.render(Alux.router.target());
     });
 });
+
+// A fragment name can be provided instead of a fragment implementation
+Alux.router.register('component/badge', 'badge');
+

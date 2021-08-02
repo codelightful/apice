@@ -9,6 +9,6 @@ Alux.fragment.register('navigation', './site/fragments/navigation.html', 'naviga
 // A fragment does not require to have a controller
 Alux.fragment.register('home', './site/fragments/home.html');
 
-
-// A fragment does not require to have a controller
 Alux.fragment.register('toast', './site/fragments/components/toast.html');
+
+Alux.fragment.register('badge', './site/fragments/components/badge.html');
