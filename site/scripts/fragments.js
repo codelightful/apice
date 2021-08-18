@@ -1,5 +1,7 @@
+'use strict';
+
 // demonstrates the registering of a fragment using a function as a callback that is executed after the fragment content is rendered
-Alux.fragment.register('layout', './site/fragments/layout.html', function() {
+Alux.fragment.register('layout', './site/fragments/layout.html', () => {
     Alux.fragment('navigation').serve('#navigationArea');
 });
 
