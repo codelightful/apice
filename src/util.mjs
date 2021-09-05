@@ -1,7 +1,16 @@
+// NOTE: this module is a low level module and should not import any other module
 const $module = {};
 const $scope = {};
 
-// NOTE: this module is a low level module and should not import any other module
+/** Parses a string HTML content and returns its content or null if it is not HTML content */
+function parseHTML(content) {
+	if (!content || typeof (content) !== 'string') {
+		return null;
+	}
+	const holder = document.createElement("div");
+	holder.innerHTML = content;
+	return [...holder.childNodes];
+}
 
 //-----------------------------------------------------------------------------
 // ALUX ELEMENT
@@ -26,6 +35,11 @@ class AluxElement {
 		return 1;
 	}
 
+	/** Allows to obtain the base DOM element */
+	get element() {
+		return this.#element;
+	}
+
 	/**
 	 * Allows to obtain or set the HTML content of an element.  If no paramaters are provided the html content will
 	 * be returned.  When a string argument is provided, the HTML content of the element will be set with the string.
@@ -46,15 +60,83 @@ class AluxElement {
 		}
 		var content = arguments[0];
 		if (!content) {
-			this.#element.innerHTML = '';
-		} else if (typeof (content) === 'string') {
-			this.#element.innerHTML = content;
+			content = '';
 		} else if (content instanceof AluxElement) {
-			this.#element.innerHTML = content.html();
+			content = content.html();
+		}
+		this.#element.innerHTML = content;
+		return this;
+	}
+
+	/**
+	 * Internal method to parse content and create an array of its HTML DOM elements
+	 * @param content Content to parse
+	 * @returns Array with HTML DOM elements
+	 */
+	#parseContent(content) {
+		if (content instanceof AluxElement) {
+			content = [content.element];
+		} else if (content instanceof Element) {
+			content = [content];
+		} else {
+			content = parseHTML(content);
+		}
+		return content;
+	}
+
+	/**
+	 * Adds an HTML content at the beggining of this content
+	 * @returns This element instance
+	 */
+	prepend() {
+		if (!this.#element) {
+			return this;
+		} else if (arguments.length === 0) {
+			return this;
+		} else if (arguments.length > 1) {
+			for (var idx = arguments.length - 1; idx >= 0; idx--) {
+				this.prepend(arguments[idx]);
+			}
+			return this;
+		}
+		// TODO: what happen if element is an array
+		const content = this.#parseContent(arguments[0]);
+		if (content) {
+			const currentBeginning = this.#element.firstChild;
+			content.map(current => { this.#element.insertBefore(current, currentBeginning); });
 		}
 		return this;
 	}
 
+	/**
+	 * Appends content to the end of the current element
+	 * @returns This element instance
+	 */
+	append() {
+		if (!this.#element) {
+			return this;
+		} else if (arguments.length === 0) {
+			return this;
+		} else if (arguments.length > 1) {
+			for (var idx = 0; idx < arguments.length; idx++) {
+				this.append(arguments[idx]);
+			}
+			return this;
+		}
+		// TODO: what happen if element is an array
+		const content = this.#parseContent(arguments[0]);
+		if (content) {
+			content.map(current => { this.#element.appendChild(current); });
+		}
+		return this;
+	}
+
+	/**
+	 * Bind a specific ebent with a function
+	 * @param eventName String with the event name
+	 * @param fnc Function to bind
+	 * @returns This element instance
+	 */
 	on(eventName, fnc) {
 		if (!eventName) {
 			throw new Error('alux.element.on.no_event_name');
@@ -68,7 +150,8 @@ class AluxElement {
 
 /**
  * Allows to obtain an Alux element as a wrapper for a particular DOM element
- * @param selector String with the selector to obtain the DOM element or reference to the DOM element
+ * @param selector String with the selector to obtain the DOM element or reference to the DOM element. If it is not
+ * 			provided then a reference to the body will be used.
  * @returns An AluxElement wrapping the element. If the element does not exist an empty AluxElement will be returned.
  */
 $module.element = function (selector) {
@@ -168,9 +251,9 @@ $module.events.addListener = function (target, eventName, fnc) {
 	} else if (typeof (fnc) !== 'function') {
 		return;
 	}
-	if (typeof(target.addEventListener) === 'function') {
+	if (typeof (target.addEventListener) === 'function') {
 		target.addEventListener(eventName, fnc, false);
-	} else if (typeof(target.attachEvent) === 'function') {
+	} else if (typeof (target.attachEvent) === 'function') {
 		target.attachEvent('on' + eventName, fnc);
 	}
 };
@@ -194,6 +277,41 @@ $module.isPromise = function (target) {
 $module.trim = function (text) {
 	return text.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
 };
+
+// regular expression to extract the message placeholders
+const holderRegex = /\{(\d+)\}/g;
+
+/**
+ * Replaces all the placeholders in a string
+ * @param input String containing the placeholders to replace. Each placeholder will be identified
+ * 			with a numeric index (starting at zero) between curly brackets.
+ * @param values Array with the values to replace the placeholders.
+ * @returns Object containing the output text and the unbinded values. It has the shape: { output: 'string', unbind: array };
+ */
+$module.placeholders = function (input, ...values) {
+	const result = { output: input, unbind: values };
+	if (typeof (input) !== 'string') {
+		return result;
+	}
+	const indexControl = {};
+	const holders = input.matchAll(holderRegex);
+	for (let holder of holders) {
+		const source = holder[1];
+		if (!source || indexControl[source]) {
+			continue;
+		}
+		indexControl[source] = true;
+		const regex = new RegExp('\\{' + source + '\\}', 'g');
+		const value = values[source];
+		result.unbind[source] = null;
+		result.output = result.output.replace(regex, value);
+	}
+	// removes the elements that have been used
+	result.unbind = result.unbind.filter((element) => {
+		return element !== undefined && element !== null;
+	});
+	return result;
+}
 
 //-----------------------------------------------------------------------------
 // RANDOM
