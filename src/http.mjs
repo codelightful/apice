@@ -1,7 +1,7 @@
-const $module = {};
-const $moduleName = 'alux.http';
-
 import errorHandler from './errorHandler.mjs';
+
+const $module = {};
+const $moduleName = 'apice.http';
 
 /** Creates the underlying XMLHTTP object used to execute ajax calls */
 function createXmlHttp() {
@@ -14,7 +14,7 @@ function createXmlHttp() {
 			try {
 				return new ActiveXObject('Microsoft.XMLHTTP');
 			} catch (ex) {
-				throw Error('alux.http.xmlhttp_creation_error');
+				throw Error('apice.http.xmlhttp_creation_error');
 			}
 		}
 	}
@@ -42,11 +42,11 @@ function createRequest(resolve, reject) {
  * 					- method: String with the HTTP method to execute: GET, POST, PUT, DELETE. If this is not provided, GET will be used by default.
  * 					- async: Boolean value to determine if the request should be asynchronous (true) or not. By default it is true.
  *                  - data: Data to be included in a POST, PUT or DELETE request
- * @returns 
+ * @returns Promise to be fulfilled according to the HTTP request result
  */
 $module.request = function (url, options) {
 	if (typeof (url) !== 'string' || !url) {
-		throw new Error('alux.http.null_url');
+		return Promise.reject('apice.http.null_url');
 	}
 	if (!options) {
 		options = {};
@@ -63,7 +63,6 @@ $module.request = function (url, options) {
 		} else {
 			request.send(options.data);
 		}
-
 	});
 };
 
@@ -81,7 +80,7 @@ $module.loadScript = function (url) {
 		element.onerror = () => {
 			reject(errorHandler.create({
 				module: $moduleName,
-				code: 'alux.http.load_script_error[' + url + ']'
+				code: `apice.http.load_script_error[${url}]`
 			})); // TODO: collect error info
 		};
 		element.onload = () => {
@@ -92,7 +91,7 @@ $module.loadScript = function (url) {
 };
 
 /** Class representing a URL assembled with different parts */
-class AluxUrl {
+class ApiceUrl {
 	// string with the HTTP protocol (http, https)
 	#protocol
 	// String wit the host name
@@ -111,7 +110,7 @@ class AluxUrl {
 	 */
 	constructor(protocol, host, port, path) {
 		if (!this.#host) {
-			throw new Error('alux.http.url.no_host');
+			throw new Error('apice.http.url.no_host');
 		}
 		this.#protocol = protocol ?? 'https';
 		this.#host = host;
@@ -220,6 +219,7 @@ class AluxUrl {
 	}
 }
 
+/** Class to manipulate and create an URL */
 class UrlBuilder {
 	// string with the HTTP protocol (http, https)
 	#protocol
@@ -262,7 +262,7 @@ class UrlBuilder {
 		} else if (portType === 'number') {
 			this.#port = String(port);
 		} else {
-			throw new Error('alux.http.url_builder.invalid_port');
+			throw new Error('apice.http.url_builder.invalid_port');
 		}
 		return this;
 	}
@@ -282,7 +282,7 @@ class UrlBuilder {
 	 * @returns Instance representing the Url
 	 */
 	build() {
-		return new AluxUrl(this.#protocol, this.#host, this.#port, this.#path);
+		return new ApiceUrl(this.#protocol, this.#host, this.#port, this.#path);
 	}
 }
 

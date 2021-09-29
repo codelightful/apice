@@ -1,0 +1,326 @@
+/*
+da4453 - Rojo dark accent 
+4a89dc - Azul dark accent
+f68b42 - Yellow dark accent
+8cc152 - Green dark accent
+
+ed5565 - Rojo light accent 
+5d9cec - Azul light accent
+ffce54 - Yellow light accent
+a0d468 - Green light accent
+*/
+
+/*===========================================================================*/
+@keyframes bounce-in{
+    0%{
+        opacity: 0;
+        transform: scale(0.3) translate3d(0,0,0);
+    }
+    50%{
+        opacity: 0.5;
+        transform: scale(1.1);
+    }
+    80%{
+        opacity: 0.7;
+        transform: scale(0.89);
+    }
+    100%{
+        opacity: 1;
+        transform: scale(1) translate3d(0,0,0);
+    }
+} 
+
+/*===========================================================================*/
+/* BADGES */
+/*===========================================================================*/
+/* Box style message that consumes all the available horizontal space */
+.badge {
+    border-radius: 8px;
+    padding: 8px;
+}
+
+/* Header inside a badge */
+.badge > .header {
+    font-weight: 400;
+    font-size: 1.2rem;
+}
+
+/* Badge with an error message */
+.badge-error {
+    background-color: #ffebee;
+    border: solid 1px #ff4444;    
+    color: #cc0000;
+}
+
+/* Badge with a warning message */
+.badge-warn {
+    background-color: #fff8e1;
+    border: solid 1px #ff8800;    
+    color: #e65100;
+}
+
+/* Badge with an informational message */
+.badge-info {
+    background-color: #e3f2fd;
+    border: solid 1px #4285f4;    
+    color: #1a237e;
+}
+
+/* Badge with a success message */
+.badge-success {
+    background-color: #e8f5e9;
+    border: solid 1px #007e33;    
+    color: #1b5e20;
+}
+
+/*===========================================================================*/
+/* ICONS */
+/*===========================================================================*/
+.apc-icon {
+    background-position: top;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.icon-error {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' width='350' height='350' viewBox='0 0 350 350' xml:space='preserve'%3E%3Cg id='icon' style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;' transform='translate(-1.9444444444444287 -1.9444444444444287) scale(3.89 3.89)' %3E%3Cpath d='M 45 90 C 20.187 90 0 69.813 0 45 C 0 20.187 20.187 0 45 0 c 24.813 0 45 20.187 45 45 C 90 69.813 69.813 90 45 90 z' style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: %23ffffff; fill-rule: nonzero; opacity: 1;' transform=' matrix(1 0 0 1 0 0) ' stroke-linecap='round' /%3E%3Cpath d='M 45 57.469 L 45 57.469 c -1.821 0 -3.319 -1.434 -3.399 -3.252 L 38.465 23.95 c -0.285 -3.802 2.722 -7.044 6.535 -7.044 h 0 c 3.813 0 6.82 3.242 6.535 7.044 l -3.137 30.267 C 48.319 56.036 46.821 57.469 45 57.469 z' style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: %23da4453; fill-rule: nonzero; opacity: 1;' transform=' matrix(1 0 0 1 0 0) ' stroke-linecap='round' /%3E%3Ccircle cx='45' cy='67.67' r='5.42' style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: %23da4453; fill-rule: nonzero; opacity: 1;' transform=' matrix(1 0 0 1 0 0) '/%3Ea%0A%3C/g%3E%3C/svg%3E");
+}
+
+.icon-warn {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' width='350' height='350' viewBox='0 0 350 350' xml:space='preserve'%3E%3Cg id='icon' style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;' transform='translate(-1.9444444444444287 -1.9444444444444287) scale(3.89 3.89)' %3E%3Cpath d='M 45 88.11 h 40.852 c 3.114 0 5.114 -3.307 3.669 -6.065 L 48.669 4.109 c -1.551 -2.959 -5.786 -2.959 -7.337 0 L 0.479 82.046 c -1.446 2.758 0.555 6.065 3.669 6.065 H 45 z' style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: %23ffffff; fill-rule: nonzero; opacity: 1;' transform=' matrix(1 0 0 1 0 0) ' stroke-linecap='round' /%3E%3Cpath d='M 45 64.091 L 45 64.091 c -1.554 0 -2.832 -1.223 -2.9 -2.776 l -2.677 -25.83 c -0.243 -3.245 2.323 -6.011 5.577 -6.011 h 0 c 3.254 0 5.821 2.767 5.577 6.011 L 47.9 61.315 C 47.832 62.867 46.554 64.091 45 64.091 z' style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: %23f68b42; fill-rule: nonzero; opacity: 1;' transform=' matrix(1 0 0 1 0 0) ' stroke-linecap='round' /%3E%3Ccircle cx='44.995999999999995' cy='74.02600000000001' r='4.626' style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: %23f68b42; fill-rule: nonzero; opacity: 1;' transform=' matrix(1 0 0 1 0 0) '/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.icon-info {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' width='350' height='350' viewBox='0 0 350 350' xml:space='preserve'%3E%3Cg id='icon' style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;' transform='translate(-1.9444444444444287 -1.9444444444444287) scale(3.89 3.89)' %3E%3Cpath d='M 45 0 C 20.187 0 0 20.187 0 45 c 0 24.813 20.187 45 45 45 c 24.813 0 45 -20.187 45 -45 C 90 20.187 69.813 0 45 0 z M 52.706 67.583 l -0.521 2.194 c -0.227 0.958 -0.938 1.736 -1.878 2.028 c -3.267 1.016 -6.733 1.262 -10.125 0.711 c -2.291 -0.373 -3.846 -2.532 -3.474 -4.823 l 3.067 -18.855 c 0.363 -2.232 -0.817 -4.315 -2.697 -5.247 c -1.175 -0.582 -1.805 -1.885 -1.502 -3.161 l 0.521 -2.194 c 0.227 -0.958 0.938 -1.736 1.878 -2.029 c 3.267 -1.016 6.733 -1.262 10.125 -0.711 c 2.291 0.373 3.846 2.532 3.474 4.823 l -3.067 18.855 c -0.363 2.232 0.817 4.315 2.697 5.247 C 52.379 65.004 53.008 66.307 52.706 67.583 z M 47.55 31.096 c -3.838 0 -6.95 -3.112 -6.95 -6.95 s 3.112 -6.95 6.95 -6.95 s 6.95 3.112 6.95 6.95 S 51.388 31.096 47.55 31.096 z' style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: %23ffffff; fill-rule: nonzero; opacity: 1;' transform=' matrix(1 0 0 1 0 0) ' stroke-linecap='round' /%3E%3C/g%3E%3C/svg%3E");
+}
+
+.icon-success {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' width='350' height='350' viewBox='0 0 350 350' xml:space='preserve'%3E%3Cg id='icon' style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;' transform='translate(-1.9444444444444287 -1.9444444444444287) scale(3.89 3.89)' %3E%3Ccircle cx='45' cy='45' r='45' style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: %23ffffff; fill-rule: nonzero; opacity: 1;' transform=' matrix(1 0 0 1 0 0) '/%3E%3Cpath d='M 38.478 64.5 c -0.01 0 -0.02 0 -0.029 0 c -1.3 -0.009 -2.533 -0.579 -3.381 -1.563 L 21.59 47.284 c -1.622 -1.883 -1.41 -4.725 0.474 -6.347 c 1.884 -1.621 4.725 -1.409 6.347 0.474 l 10.112 11.744 L 61.629 27.02 c 1.645 -1.862 4.489 -2.037 6.352 -0.391 c 1.862 1.646 2.037 4.49 0.391 6.352 l -26.521 30 C 40.995 63.947 39.767 64.5 38.478 64.5 z' style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: %238cc152; fill-rule: nonzero; opacity: 1;' transform=' matrix(1 0 0 1 0 0) ' stroke-linecap='round' /%3E%3C/g%3E%3C/svg%3E");
+}
+
+/*===========================================================================*/
+/* TOASTS */
+/*===========================================================================*/
+/* Top container to position all the toasts */
+#apc-toast-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    max-width: 400px;
+    min-width: 300px;
+    width: 30%;
+    box-sizing: border-box;
+}
+
+/* Box with the clear boundaries for a single toast */
+.apc-toast {
+    position: relative;
+    float: right;
+    text-align: left;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 80px;
+    margin-top: 10px;
+    margin-right: 10px;
+    padding: 10px;
+    animation-name: bounce-in;
+    animation-duration: 450ms;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+.apc-toast > .apc-icon {
+    float: left;
+    margin-right: 15px;
+    width: 40px;
+    height: 40px;
+}
+
+.apc-toast > .apc-header {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    font-weight: bolder;
+}
+
+.toast-error {
+    border-color: #da4453;
+    background-color: #da4453;
+    color: #ffffff;
+}
+
+.toast-warn {
+    border-color: #f68b42;
+    background-color: #f68b42;
+    color: #ffffff;
+}
+
+.toast-info {
+    border-color: #4a89dc;
+    background-color: #4a89dc;
+    color: #ffffff;
+}
+
+.toast-success {
+    border-color: #8cc152;
+    background-color: #8cc152;
+    color: #ffffff;
+}
+
+/*===========================================================================*/
+/* FORM */
+/*===========================================================================*/
+/* Top form container */
+.apc-form {
+    font-size: 1rem;
+    margin: 0 auto;
+}
+.apc-form * {
+    box-sizing: border-box;
+}
+
+/* Container wrapping a form cild element */
+.apc-field, .apc-select, .apc-check, .apc-spacer {
+    position: relative;
+    max-width: 100%;
+    float: left;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 78px;
+}
+
+/* Element providing spaces between form fields */
+.apc-spacer  {
+    float: left;
+}
+
+/* Field input of type text */
+.apc-field > .apc-label {
+	position: absolute;
+    font-size: 0.85rem;
+    top: 15px;
+    left: 10px;
+}
+.apc-field > input[type="text"] {
+    border: 1px solid #d8d8d8;
+    border-radius: 8px;
+    margin-top: 25px;
+    margin-left: 0;
+    padding: 8px;
+    vertical-align: baseline;
+    outline: none;
+    font-size: 100%;
+    width: 100%;
+}
+.apc-field > input[type="text"]:focus {
+    border: solid 2px #5d9cec;
+}
+
+/* Field input for a checkbox */
+.apc-check > .apc-label {
+	position: absolute;
+    font-size: 0.85rem;
+    top: 36px;
+    left: 40px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.apc-check > input[type="checkbox"] {
+    outline-color: red;
+    margin-top: 25px;
+    margin-left: 0;
+    width: 20px;
+    height: 20px;
+    font-size: 100%;
+    cursor: pointer;
+}
+.apc-check > input[type="checkbox"]:focus {
+    outline-color: #5d9cec;
+}
+
+/* Field input of type select */
+.apc-select > .apc-label {
+	position: absolute;
+    font-size: 0.85rem;
+    top: 15px;
+    left: 10px;
+}
+.apc-select > select {
+    border: 1px solid #d8d8d8;
+    border-radius: 8px;
+    margin-top: 25px;
+    margin-left: 0;
+    padding: 7px;
+    vertical-align: baseline;
+    outline: none;
+    font-size: 100%;
+    width: 100%;
+}
+.apc-select > select:focus {
+    border: solid 2px #5d9cec;
+}
+
+.apc-button-bar {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.apc-button {
+    border: solid 2px #5d9cec;
+    border-radius: 8px;
+    padding: 8px 12px;
+    background-color: #5d9cec;
+    color: #ffffff;
+    cursor: pointer;
+}
+.apc-button:hover {
+    border: solid 2px #4a89dc;
+    background-color: #4a89dc;
+    color: #ffffff;
+}
+.apc-button:active {
+    border: solid 2px #4a89dc;
+    background-color: #ffffff;
+    color: #4a89dc;
+}
+
+@media screen and (max-width: 640px) {
+    .apc-form {
+        width: 90%;
+    }
+}
+@media screen and (min-width: 641px) {
+    .apc-form {
+        width: 600px;
+    }
+}
+@media screen and (min-width: 1024px) {
+    .apc-form {
+        width: 940px;
+    }
+}
+@media screen and (min-width: 1280px) {
+    .apc-form {
+        width: 1024px;
+    }
+    .apc-field.apc-xs, .apc-select.apc-xs, .apc-check.apc-xs, .apc-spacer.apc-xs {
+        width: 15%;
+    }
+	.apc-field.apc-sm, .apc-select.apc-sm, .apc-check.apc-sm, .apc-spacer.apc-sm {
+        width: 25%;
+    }
+	.apc-field.apc-md, .apc-select.apc-md, .apc-check.apc-md, .apc-spacer.apc-md {
+        width: 50%;
+    }
+	.apc-field.apc-lg, .apc-select.apc-lg, .apc-check.apc-lg, .apc-spacer.apc-lg {
+        width: 75%;
+    }
+	.apc-field.apc-xl, .apc-select.apc-xl, .apc-check.apc-xl, .apc-spacer.apc-xl {
+        width: 100%;
+    }
+}

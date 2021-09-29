@@ -3,11 +3,11 @@ import { terser } from 'rollup-plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 
 export default {
-    input: 'src/alux.mjs',
+    input: 'src/apice.mjs',
     output: {
-        file: './dist/alux.min.js',
+        file: './dist/apice.min.js',
         format: 'iife',
-        name: 'Alux',
+        name: 'apice',
         sourcemap: true,
         plugins: [
             terser()

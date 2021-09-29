@@ -1,5 +1,13 @@
+import events from './events.mjs';
+import element from './element.mjs';
+import fragment from './fragment.mjs';
+import errorHandler from './errorHandler.mjs';
+import logging from './logging.mjs';
+
+const $moduleName = 'apice.router';
+const logger = logging.getLogger($moduleName);
 const $module = {};
-const $moduleName = 'alux.router';
+
 const $scope = {};
 // contains all the routes registered
 $scope.routes = [];
@@ -10,147 +18,150 @@ $scope.notFoundRoute = null;
 // Reference to the target element that receives the routing of fragments
 $scope.target = null;
 
-import util from './util';
-import fragment from './fragment';
-import errorHandler from './errorHandler';
-import log from './logging';
-const logger = log.getLogger($moduleName);
 
 /**
  * Internal control method that is invoked when the hash receives a change
  * @param eventName String with the name of the event that triggered the change (mostly for tracing purposes)
  */
 function onHashChange(eventName) {
-    logger.debug('Hash change triggered. event=' + eventName);
-    const hash = $module.hash();
-    var route = $module.match(hash);
-    if (route) {
-        logger.debug('Serving route: ' + route.pattern);
-    } else if ($scope.defaultRoute && (!hash || !$scope.notFoundRoute)) {
-        if (hash) {
-            logger.warn('Route not found. Serving default hash=' + hash);
-        } else {
-            logger.debug('No hash found. Serving default router');
-        }
-        route = $scope.defaultRoute;
-    } else if ($scope.notFoundRoute) {
-        // TODO: define actions when there is no matching route and default hash is not defined
-        logger.warn('Route not found. hash=' + hash + ' route=' + $scope.notFoundRoute.pattern);
-        route = $scope.notFoundRoute;
-    } else {
-        errorHandler.render({
-            module: $moduleName,
-            message: 'The requested resource was not found: ' + hash,
-            code: 'alux.router.no_matching_no_default'
-        });
-        return;
-    }
-    route.serve(hash);
+	logger.debug('Hash change triggered. event=' + eventName);
+	const hash = $module.hash();
+	var route = $module.match(hash);
+	if (route) {
+		logger.debug('Serving route: ' + route.pattern);
+	} else if ($scope.defaultRoute && (!hash || !$scope.notFoundRoute)) {
+		if (hash) {
+			logger.warn('Route not found. Serving default hash=' + hash);
+		} else {
+			logger.debug('No hash found. Serving default router');
+		}
+		route = $scope.defaultRoute;
+	} else if ($scope.notFoundRoute) {
+		// TODO: define actions when there is no matching route and default hash is not defined
+		logger.warn('Route not found. hash=' + hash + ' route=' + $scope.notFoundRoute.pattern);
+		route = $scope.notFoundRoute;
+	} else {
+		errorHandler.render({
+			module: $moduleName,
+			message: 'The requested resource was not found: ' + hash,
+			code: 'apice.router.no_matching_no_default'
+		}); // FIXME: should we use a selector like $scope.target
+		return;
+	}
+	route.serve();
 }
 
 /**
  * Class representing a hash that allows to parse it and evaluate its parts
  */
 class RouteHash {
-    #pattern
-    #parts
-    #parameters
+	#pattern
+	#parts
+	#parameters
 
-    constructor(pattern) {
-        if (!pattern || typeof (pattern) !== 'string') {
-            throw Error('alux.router.hah.invalid_pattern');
-        }
-        this.#pattern = pattern;
-        this.#parse();
-    }
+	constructor(pattern) {
+		if (!pattern || typeof (pattern) !== 'string') {
+			throw Error('apice.router.hah.invalid_pattern');
+		}
+		this.#pattern = pattern;
+		this.#parse();
+	}
 
-    #parse() {
-        this.#parts = [];
-        this.#parameters = [];
-        var parts = this.#pattern.split('/');
-        for (var idx = 0; idx < parts.length; idx++) {
-            var section = parts[idx];
-            if(section.startsWith(':')) {
-                this.#parameters.push(section.substr(1));
-            }
-            this.#parts.push(section);
-        }
-    }
+	#parse() {
+		this.#parts = [];
+		this.#parameters = [];
+		var parts = this.#pattern.split('/');
+		for (var idx = 0; idx < parts.length; idx++) {
+			var section = parts[idx];
+			if (section.startsWith(':')) {
+				this.#parameters.push(section.substr(1));
+			}
+			this.#parts.push(section);
+		}
+	}
 
-    get pattern() {
-        return this.#pattern;
-    }
+	get pattern() {
+		return this.#pattern;
+	}
 
-    get count() {
-        return this.#parts.length;
-    }
+	get count() {
+		return this.#parts.length;
+	}
 
-    get hasParameters() {
-        return this.#parameters.length > 0;
-    }
+	get hasParameters() {
+		return this.#parameters.length > 0;
+	}
 }
 
 /**
  * Class representing a route definition
  */
-class AluxRoute {
-    // Object representing the router hash pattern
-    #routeHash
-    // Action to be executed when the route is executed
-    #action
+class ApiceRoute {
+	// Object representing the router hash pattern
+	#routeHash
+	// Action to be executed when the route is executed
+	#action
 
-    /**
-     * Creates an object with the router specifications
-     * @param pattern String with the hash pattern to use for this router
-     * @param action Function with the action to execute or reference to a fragment or a controller
-     */
-    constructor(pattern, action) {
-        if (!pattern || typeof (pattern) !== 'string') {
-            throw new Error('alux.route.constructor.invalid_route_value');
-        } else if (!action) {
-            throw new Error('alux.route.constructor.missing_route_action');
-        }
-        this.#routeHash = new RouteHash(pattern);
-        this.#action = action;
-    }
+	/**
+	 * Creates an object with the router specifications
+	 * @param pattern String with the hash pattern to use for this router
+	 * @param action Function with the action to execute or reference to a fragment or a controller
+	 */
+	constructor(pattern, action) {
+		if (!pattern || typeof (pattern) !== 'string') {
+			throw Error('apice.route.constructor.invalid_route_value');
+		} else if (!action) {
+			throw Error('apice.route.constructor.missing_route_action');
+		}
+		this.#routeHash = new RouteHash(pattern);
+		this.#action = action;
+	}
 
-    get pattern() {
-        return this.#routeHash.pattern;
-    }
+	get pattern() {
+		return this.#routeHash.pattern;
+	}
 
-    asDefault() {
-        $scope.defaultRoute = this;
-    }
+	asDefault() {
+		$scope.defaultRoute = this;
+	}
 
-    asNotFound() {
-        $scope.notFoundRoute = this;
-    }
+	asNotFound() {
+		$scope.notFoundRoute = this;
+	}
 
-    match(hash) {
-        if (!this.#routeHash.hasParameters) {
-            return hash === this.#routeHash.pattern;
-        }
-        // QUEDE AQUI IMPLEMENTANDO EL ALGORITMO DE HASHING
-        return false;
-    }
+	match(hash) {
+		if (!this.#routeHash.hasParameters) {
+			return hash === this.#routeHash.pattern;
+		}
+		// QUEDE AQUI IMPLEMENTANDO EL ALGORITMO DE HASHING
+		return false;
+	}
 
-    serve(hash) {
-        if (typeof (this.#action) === 'function') {
-            try {
-                this.#action(hash);
-            } catch (err) {
-                logger.error('alux.router.action_error[' + this.pattern + '|' + hash + ']', err);
-            }
-        } else if(typeof(this.#action) === 'string') {
-            fragment(this.#action).serve($scope.target);
-        } else if (fragment.isFragment(this.#action)) {
-            this.#action.serve($scope.target);
-        } else if (typeof (this.#action.serve) === 'function') {
-            this.#action.serve();
-        } else {
-            throw Error('aux.route.invalid_action[' + this.pattern + ']');
-        }
-    }
+	/**
+	 * Serves the route represented by the current instance, triggering its associated action
+	 */
+	serve() {
+		try {
+			if (typeof (this.#action) === 'function') {
+				this.#action();
+			} else if (typeof (this.#action) === 'string') {
+				fragment(this.#action).render($scope.target);
+			} else if (fragment.isFragment(this.#action)) {
+				this.#action.render($scope.target);
+			} else if (typeof (this.#action.serve) === 'function') {
+				this.#action.serve();
+			} else {
+				throw Error(`apice.router.invalid_action[${this.pattern}]`);
+			}
+		} catch (ex) {
+			errorHandler.render({
+				module: $moduleName,
+				message: 'An error has occurred trying to serve the resource. Please contact technical support without closing this screen',
+				code: `apice.router.serve_error[${this.pattern}]`,
+				cause: ex
+			}, $scope.target);
+		}
+	}
 }
 
 /**
@@ -159,10 +170,10 @@ class AluxRoute {
  * @param action Function to be invoked when the route is executed, or reference to the fragment or the controller to be executed
  */
 $module.register = function (pattern, action) {
-    logger.debug('Registering route. pattern=' + pattern);
-    var route = new AluxRoute(pattern, action);
-    $scope.routes.push(route);
-    return route;
+	logger.debug('Registering route. pattern=' + pattern);
+	var route = new ApiceRoute(pattern, action);
+	$scope.routes.push(route);
+	return route;
 };
 
 /**
@@ -171,16 +182,16 @@ $module.register = function (pattern, action) {
  * @returns Route instance that matches the path or null if nothing matches the path
  */
 $module.match = function (hash) {
-    if (!hash || typeof (hash) !== 'string') {
-        return null;
-    }
-    for (var idx = 0; idx < $scope.routes.length; idx++) {
-        var route = $scope.routes[idx];
-        if (route.match(hash) === true) {
-            return route;
-        }
-    }
-    return null;
+	if (!hash || typeof (hash) !== 'string') {
+		return null;
+	}
+	for (var idx = 0; idx < $scope.routes.length; idx++) {
+		var route = $scope.routes[idx];
+		if (route.match(hash) === true) {
+			return route;
+		}
+	}
+	return null;
 };
 
 /**
@@ -188,29 +199,29 @@ $module.match = function (hash) {
  * @returns Current hash value in the location
  */
 $module.hash = function () {
-    var hash = window.location.hash;
-    if (hash.startsWith('#')) {
-        hash = hash.substr(1);
-    }
-    return hash;
-}
+	var hash = window.location.hash;
+	if (hash.startsWith('#')) {
+		hash = hash.substr(1);
+	}
+	return hash;
+};
 
 /**
  * Initializes the execution of the routing engine
  */
 $module.start = function () {
-    logger.debug('Starting Alux router');
-    util.events.addListener(window, 'hashchange', () => {
-        onHashChange('hashchange');
-    });
-    util.events.addListener(window, 'popstate', () => {
-        onHashChange('popstate');
-        return false;
-    });
-    util.events.onReady(() => {
-        onHashChange('routerstart');
-    });
-    return $module;
+	logger.debug('Starting Apice router');
+	events.addListener(window, 'hashchange', () => {
+		onHashChange('hashchange');
+	});
+	//util.events.addListener(window, 'popstate', () => {
+	//    onHashChange('popstate');
+	//    return false;
+	//});
+	events.documentReady(() => {
+		onHashChange('routerstart');
+	});
+	return $module;
 };
 
 /**
@@ -222,23 +233,31 @@ $module.start = function () {
  * @returns When no selector is provided this method returns the defined target.
  */
 $module.target = function () {
-    if (arguments.length === 0) {
-        if (!$scope.target) {
-            return document.body;
-        }
-        return $scope.target;
-    }
-    var selector = arguments[0];
-    if (!selector) {
-        $scope.target = document.body;
-        return $module;
-    }
-    $scope.target = util.element(selector);
-    if (!$scope.target) {
-        logger.error('alux.router.target_not_found[' + selector + ']');
-        $scope.target = document.body;
-    }
-    return $module;
+	// getter mode
+	if (arguments.length === 0) {
+		return $scope.target;
+	}
+	// setter mode
+	var selector = arguments[0];
+	if (!selector) {
+		$scope.target = null;
+	} else {
+		$scope.target = element(selector);
+		if (!$scope.target) {
+			logger.error(`apice.router.target_notfound[${selector}]`);
+		}
+	}
+	if (!$scope.target) {
+		logger.info('Using default routing target container');
+		var container = document.getElementById('apc-router-container');
+		if (!container) {
+			container = document.createElement('div');
+			container.id = 'apc-router-container';
+			document.body.appendChild(container);
+		}
+		$scope.target = element(container);
+	}
+	return $module;
 };
 
 export default $module;

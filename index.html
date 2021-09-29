@@ -1,24 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Alux Framework</title>
-    <link rel="stylesheet" type="text/css" href="./src/alux.css"/>
-    <link rel="stylesheet" type="text/css" href="./site/css/alux-samples.css"/>
-    <script type="text/javascript" src="./dist/alux.min.js"></script>
-    <script type="text/javascript" src="./site/scripts/controllers.js"></script>
-    <script type="text/javascript" src="./site/scripts/fragments.js"></script>
-    <script type="text/javascript" src="./site/scripts/routes.js"></script>
+    <title>Apice Framework</title>
+    <link rel="stylesheet" type="text/css" href="./src/apice.css"/>
+    <link rel="stylesheet" type="text/css" href="./site/css/apice-samples.css"/>
+    <script type="text/javascript" src="./dist/apice.min.js"></script>
+    <script type="text/javascript" src="./site/scripts/site-controllers.js"></script>
+    <script type="text/javascript" src="./site/scripts/site-fragments.js"></script>
+    <script type="text/javascript" src="./site/scripts/site-routes.js"></script>
     <script type="text/javascript">
-        Alux.ready(function() {
-            Alux.fragment('layout').serve('body', true).then(() => {
-                Alux.router.target('#contentArea').start();
-            }).catch((err) => {
-                err.render('body');
-            });
+        Apice.ready(function() {
+            Apice.fragment('layout').render().then(() => {
+				Apice.router.target('#contentArea').start();
+			}).catch(Apice.error.render);
         });
     </script>
 </head>
 <body>
-    Loading.. please wait
 </body>
 </html>

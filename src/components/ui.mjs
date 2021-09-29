@@ -1,3 +1,4 @@
-import toast from './toast';
+import toast from './toast.mjs';
+import form from './form.mjs';
 
-export default { toast };
+export default { toast, form };

@@ -1,6 +1,6 @@
-const $module = {};
-
 import util from './util.mjs';
+
+const $module = {};
 
 /**
  * Sets a specific cookie
@@ -8,16 +8,16 @@ import util from './util.mjs';
  * @param value Value to set
  * @param timespan Timspan to maintain the cookie in seconds
  */
-$module.set = function(name, value, timespan) {
-    if(typeof(name) !== 'string') {
-        throw new Error('alux.cookies.set.invalid_name');
-    } else if (typeof (timespan) !== 'number') {
-        throw new Error('alux.cookies.set.invalid_timespan');
-    }
-    const expireDate = new Date();
-    expireDate.setTime(expireDate.getTime() + (timespan * 1000));
-    var cookie = util.trim(name) + '=' + value + '; expires=' + expireDate.toGMTString() + '; path=/';
-    document.cookie = cookie;
+$module.set = function (name, value, timespan) {
+	if (typeof (name) !== 'string') {
+		throw Error('apice.cookies.set.invalid_name');
+	} else if (typeof (timespan) !== 'number') {
+		throw Error('apice.cookies.set.invalid_timespan');
+	}
+	const expireDate = new Date();
+	expireDate.setTime(expireDate.getTime() + (timespan * 1000));
+	var cookie = util.trim(name) + '=' + value + '; expires=' + expireDate.toGMTString() + '; path=/';
+	document.cookie = cookie;
 };
 
 /**
@@ -25,24 +25,23 @@ $module.set = function(name, value, timespan) {
  * @param name Name of the cookie to obtain
  * @returns Cookie value or null if it is not defined
  */
-$module.get = function(name) {
-    if(typeof(name) !== 'string') {
-        throw new Error('alux.cookies.get.invalid_name');
-    }
-    const cookieArray = document.cookie.split(';');
-    var cookieValue = null;
-    for(var idx=0; idx < cookieArray.length; idx++) {
-        const rawCookie = util.trim(cookieArray[idx]);
-        if(!rawCookie) {
-            continue;
-        }
-        const cookieParts = rawCookie.split('=');
-        if(util.trim(cookieParts[0]) !== name) {
-            continue;
-        }
-        return cookieParts[1];
-    }
-    return null;
+$module.get = function (name) {
+	if (typeof (name) !== 'string') {
+		throw Error('apice.cookies.get.invalid_name');
+	}
+	const cookieArray = document.cookie.split(';');
+	for (var idx = 0; idx < cookieArray.length; idx++) {
+		const rawCookie = util.trim(cookieArray[idx]);
+		if (!rawCookie) {
+			continue;
+		}
+		const cookieParts = rawCookie.split('=');
+		if (util.trim(cookieParts[0]) !== name) {
+			continue;
+		}
+		return cookieParts[1];
+	}
+	return null;
 };
 
 export default $module;
