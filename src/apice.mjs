@@ -12,8 +12,8 @@ import error from './errorHandler.mjs';
 import ui from './components/ui.mjs';
 
 const $scope = {};
-$scope.version = { major: 1, minor: 0, patch: 0 };
-console.log('%cApice Framework ' + version(), 'color: #64dd17;');
+$scope.version = { major: 0, minor: 1, patch: 0 };
+console.log(`%cApice Framework ${version()}`, 'color: #64dd17;');
 
 /**
  * Allows to obtain the current framework version.  If a boolean true is passed as an argument then a 
@@ -21,7 +21,7 @@ console.log('%cApice Framework ' + version(), 'color: #64dd17;');
  * @returns Version number as a string or canonical (as an object)
  */
 function version() {
-	if (arguments.length === 1 && arguments[0] === true) {
+	if (arguments[0] === true) {
 		return {
 			major: $scope.version.major,
 			minor: $scope.version.minor,

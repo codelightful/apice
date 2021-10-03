@@ -14,7 +14,7 @@ $scope.loggers = {};
 $scope.levels = {
 	fatal: { value: 10, color: '#ff4444', label: 'FATAL' },
 	error: { value: 20, color: '#ff4444', label: 'ERROR' },
-	warn: { value: 30, color: '#ff8800', label: 'WARNING' },
+	warn: { value: 30, color: '#ff8800', label: 'WARN' },
 	info: { value: 40, color: '#0099cc', label: 'INFO' },
 	debug: { value: 50, color: '#3E4551', label: 'DEBUG' },
 	trace: { value: 60, color: '#3E4551', label: 'TRACE' }
@@ -48,6 +48,11 @@ class Logger {
 				this.#level = $scope.globalLevel;
 			}
 		}
+	}
+
+	/** Allows to obtain the logger name */
+	get name() {
+		return this.#name;
 	}
 
 	/** Obtains or sets the log level defined for the logger instance */
@@ -180,8 +185,8 @@ $module.level = function () {
 			logger.level(arguments[0]);
 		}
 	} else if (arguments.length === 2) {
-		const logger = $module.getLogger(arguments[0]);
-		logger.level(arguments[1]);
+		const logger = $module.getLogger(arguments[1]);
+		logger.level(arguments[0]);
 		return logger.level();
 	}
 	return $scope.globalLevel?.label;

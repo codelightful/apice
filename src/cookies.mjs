@@ -9,10 +9,13 @@ const $module = {};
  * @param timespan Timspan to maintain the cookie in seconds
  */
 $module.set = function (name, value, timespan) {
-	if (typeof (name) !== 'string') {
-		throw Error('apice.cookies.set.invalid_name');
-	} else if (typeof (timespan) !== 'number') {
-		throw Error('apice.cookies.set.invalid_timespan');
+	if (!name) {
+		console.warn('Unable to set a cookie without name');
+		return;
+	} 
+	if (typeof (timespan) !== 'number') {
+		console.warn('Invalid timespan has been provided. Setting the default value');
+		timespan = 3600;
 	}
 	const expireDate = new Date();
 	expireDate.setTime(expireDate.getTime() + (timespan * 1000));
@@ -26,8 +29,8 @@ $module.set = function (name, value, timespan) {
  * @returns Cookie value or null if it is not defined
  */
 $module.get = function (name) {
-	if (typeof (name) !== 'string') {
-		throw Error('apice.cookies.get.invalid_name');
+	if (!name) {
+		return null;
 	}
 	const cookieArray = document.cookie.split(';');
 	for (var idx = 0; idx < cookieArray.length; idx++) {

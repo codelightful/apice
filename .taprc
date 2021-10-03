@@ -1,2 +1,0 @@
-test-ignore: test/setup/*
-coverage-map: test/setup/coverage-map.js

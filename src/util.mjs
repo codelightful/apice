@@ -18,6 +18,9 @@ $module.isPromise = function (target) {
 //-----------------------------------------------------------------------------
 /** Trims a string by removing leading and trailing white spaces  */
 $module.trim = function (text) {
+	if(!text) {
+		return '';
+	}
 	return text.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
 };
 
@@ -33,7 +36,7 @@ const holderRegex = /\{(\d+)\}/g;
  */
 $module.placeholders = function (input, ...values) {
 	const result = { output: input, unbind: values };
-	if (typeof (input) !== 'string') {
+	if (typeof (input) !== 'string' || !values || values.length === 0) {
 		return result;
 	}
 	const indexControl = {};
@@ -46,6 +49,9 @@ $module.placeholders = function (input, ...values) {
 		indexControl[source] = true;
 		const regex = new RegExp('\\{' + source + '\\}', 'g');
 		const value = values[source];
+		if(typeof(value) === 'undefined') {
+			continue;
+		}
 		result.unbind[source] = null;
 		result.output = result.output.replace(regex, value);
 	}

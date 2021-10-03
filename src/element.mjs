@@ -21,14 +21,22 @@ class SingleElement extends ApiceElement {
 	/** Reference to the DOM element being wrapped */
 	#element;
 
-	constructor(element) {
+	constructor(value) {
 		super();
-		this.#element = element;
+		this.#element = value;
 	}
 
 	/** Allows to determine if the instance is wrapping a valid DOM element */
 	get isValid() {
 		return !!this.#element;
+	}
+
+	/** Allows to obtain the ID of the element */
+	get id() {
+		if (!this.#element) {
+			return null;
+		}
+		return this.#element.id;
 	}
 
 	/** Allows to interact with the wrapped DOM element (if any) */
@@ -56,7 +64,10 @@ class SingleElement extends ApiceElement {
 		if (this.#element) {
 			var content = arguments[0];
 			if (!content) {
-				content = '';
+				this.#element.innerHTML = '';
+			} else if(isDOMElement(content)) {
+				this.#element.innerHTML = '';
+				this.#element.appendChild(content);
 			} else if (content instanceof ApiceElement) {
 				this.#element.innerHTML = '';
 				content.each(child => {
