@@ -2,7 +2,6 @@
   "name": "apice",
   "version": "0.1.0",
   "description": "DOM based front-end utility framework",
-  "private": true,
   "main": "./src/apice.js",
   "scripts": {
     "start": "npm-run-all --parallel watch serve",
