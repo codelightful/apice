@@ -12,7 +12,7 @@ import error from './errorHandler.mjs';
 import ui from './components/ui.mjs';
 
 const $scope = {};
-$scope.version = { major: 0, minor: 1, patch: 0 };
+$scope.version = { major: 0, minor: 1, patch: 1 };
 console.log(`%cApice Framework ${version()}`, 'color: #64dd17;');
 
 /**
