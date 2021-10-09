@@ -65,7 +65,7 @@ class SingleElement extends ApiceElement {
 			var content = arguments[0];
 			if (!content) {
 				this.#element.innerHTML = '';
-			} else if(isDOMElement(content)) {
+			} else if (isDOMElement(content)) {
 				this.#element.innerHTML = '';
 				this.#element.appendChild(content);
 			} else if (content instanceof ApiceElement) {
@@ -283,7 +283,7 @@ function applySelector(selector) {
  * 			provided then a reference to the body will be used.
  * @returns An ApiceElement wrapping the element. If the selector does not match a valid element the method will return null.
  */
-export default function (selector) {
+const $module = function (selector) {
 	if (!selector) {
 		return null;
 	} else if (selector === 'body' || selector === document.body) {
@@ -300,3 +300,33 @@ export default function (selector) {
 	}
 	return null;
 };
+
+/**
+ * Appends a source element into aother target element
+ * @param target String with the target selector to find the element, or reference to the DOM element, or Apice element
+ * @param source String with the source selector to find the element, or reference to the DOM element, or Apice element
+ */
+$module.append = function (target, source) {
+	if (!target || !source) {
+		return;
+	} else if (source === 'body' || source === document.body) {
+		throw Error('apice.element.append.source_cannot_be_body');
+	}
+	if (typeof (source) === 'string') {
+		const stringStart = source.charAt(0);
+		if (stringStart === '#' || stringStart === '.' || stringStart === '[') {
+			const sourceElement = document.querySelector(source);
+			if (!sourceElement) {
+				throw Error(`apice.element.append.unknown_source[${source}]`);
+			}
+			source = sourceElement;
+		}
+	}
+	const targetElement = $module(target);
+	if (!targetElement) {
+		throw Error(`apice.element.append.unknown_target[${target}]`);
+	}
+	targetElement.append(source);
+};
+
+export default $module;

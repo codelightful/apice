@@ -194,4 +194,76 @@ describe('Element', function() {
 		elements.prepend('AB');
 		assert.strictEqual(document.getElementById('top-element').innerHTML, '<div class="box">ABCD</div><div class="box">ABCD</div>', 'The DOM content was not changed');
 	});
+
+	it('Static append with no arguments', function() {
+		assert.doesNotThrow(() => {
+			apice.element.append();
+		});
+	});
+
+	it('Static append with null target', function() {
+		assert.doesNotThrow(() => {
+			apice.element.append(null, '#top-element');
+		});
+	});
+
+	it('Static append with null source', function() {
+		assert.doesNotThrow(() => {
+			apice.element.append('#top-element', null);
+		});
+	});
+
+	it('Static append using body as the source', function() {
+		assert.throws(() => {
+			apice.element.append('#top-element', 'body');
+		}, {
+			message: /source_cannot_be_body/
+		});
+		assert.throws(() => {
+			apice.element.append('#top-element', document.body);
+		}, {
+			message: /source_cannot_be_body/
+		});
+	});
+
+	it('Static append using unknown target', function() {
+		assert.throws(() => {
+			apice.element.append('#some-target', '#top-element');
+		}, {
+			message: /unknown_target\[\#some\-target\]/
+		});
+	});
+
+	it('Static append using unknown source', function() {
+		assert.throws(() => {
+			apice.element.append('#top-element', '#some-source');
+		}, {
+			message: /unknown_source\[\#some\-source\]/
+		});
+	});
+
+	it('Static append with selectors', function() {
+		const top = document.getElementById('top-element');
+		top.innerHTML = '<div id="div-source"></div><div id="div-target"></div>';
+		apice.element.append('#div-target', '#div-source');
+		assert.strictEqual(top.innerHTML, '<div id="div-target"><div id="div-source"></div></div>');
+	});
+
+	it('Static append with HTMLElements', function() {
+		const top = document.getElementById('top-element');
+		top.innerHTML = '<div id="div-source"></div><div id="div-target"></div>';
+		const source = document.getElementById('div-source');
+		const target = document.getElementById('div-target');
+		apice.element.append(target, source);
+		assert.strictEqual(top.innerHTML, '<div id="div-target"><div id="div-source"></div></div>');
+	});
+
+	it('Static append with Apice Elements', function() {
+		const top = document.getElementById('top-element');
+		top.innerHTML = '<div id="div-source"></div><div id="div-target"></div>';
+		const source = apice.element('#div-source')
+		const target = apice.element('#div-target');
+		apice.element.append(target, source);
+		assert.strictEqual(top.innerHTML, '<div id="div-target"><div id="div-source"></div></div>');
+	});
 });
