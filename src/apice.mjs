@@ -30,7 +30,7 @@ function version() {
 		};
 	}
 	return 'v' + $scope.version.major + '.' + $scope.version.minor + '.' + $scope.version.patch;
-};
+}
 
 /**
  * Adds a function to be executed when the framework has completed the loading process
@@ -38,6 +38,6 @@ function version() {
  */
 function ready(callback) {
 	events.documentReady(callback);
-};
+}
 
 export default { version, ready, logging, util, events, element, cookies, http, controller, fragment, router, error, ui, form };

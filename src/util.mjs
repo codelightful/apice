@@ -60,6 +60,6 @@ $module.placeholders = function (input, ...values) {
 		return element !== undefined && element !== null;
 	});
 	return result;
-}
+};
 
 export default $module;

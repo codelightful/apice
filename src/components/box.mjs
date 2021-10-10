@@ -29,6 +29,12 @@ function createClosingButton(container, box) {
 	};
 }
 
+/**
+ * Internal method to create the box header
+ * @param specs Object with the box creation specifications
+ * @param container Container HTMLElement that holds all the box parts
+ * @returns Reference to the Apice Element representing the header
+ */
 function createHeader(specs, container) {
 	const elem = createDiv('apc-header');
 	elem.style.display = 'none';
@@ -36,6 +42,11 @@ function createHeader(specs, container) {
 	return element(elem);
 }
 
+/**
+ * Internal method to create the box body
+ * @param container Container HTMLElement that holds all the box parts
+ * @returns Reference to the Apice Element representing the body
+ */
 function createBody(container) {
 	const elem = createDiv('apc-body');
 	elem.innerHTML = 'BOX-CONTENT'; // FIXME: remove
@@ -43,6 +54,12 @@ function createBody(container) {
 	return element(elem);
 }
 
+/**
+ * Internal method to create the box footer
+ * @param specs Object with the box creation specifications
+ * @param container Container HTMLElement that holds all the box parts
+ * @returns Reference to the Apice Element representing the footer
+ */
 function createFooter(specs, container) {
 	const elem = createDiv('apc-footer');
 	elem.innerHTML = 'BOX-FOOTER'; // FIXME: remove
@@ -76,6 +93,8 @@ function createBoxContainer(specs, box) {
 
 /** Class implementing the box component */
 class ApiceBox {
+	// identifier of the current box instance
+	#id;
 	// Object containin the main box parts (area, header, body, footer)
 	#elements;
 	// element where the top element is attached 
@@ -87,6 +106,8 @@ class ApiceBox {
 		if (!specs.id) {
 			specs.id = 'box-' + random.tinyId();
 		}
+		this.#id = specs.id;
+		logger.info('Creating box. id={0}', specs.id);
 		this.#status = -1;
 		this.#elements = createBoxContainer(specs, this);
 	}
@@ -105,6 +126,7 @@ class ApiceBox {
 	/** Closes the current box */
 	close() {
 		if (this.#status === 1) {
+			logger.info('Closing box. id={0}', this.#id);
 			this.#container.removeChild(this.#elements.area);
 			this.#status = 0;
 		}

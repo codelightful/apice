@@ -98,7 +98,7 @@ class ApiceController {
 		return Promise.reject(errorHandler.create({
 			module: $moduleName,
 			code: `apice.controller.bad_implementation[${this.#name}]`
-		}))
+		}));
 	}
 }
 

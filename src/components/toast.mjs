@@ -14,124 +14,124 @@ $scope.defaultTitle['success'] = 'Sucess!';
 
 /** Internal method with the logic to create the top container that will hold all the toasts */
 function createToastContainer() {
-    var container = document.getElementById('apc-toast-container');
-    if(!container) {
-        container = document.createElement('div');
-        container.id = 'apc-toast-container';
-        document.body.appendChild(container);
-    }
-    return container;
+	var container = document.getElementById('apc-toast-container');
+	if (!container) {
+		container = document.createElement('div');
+		container.id = 'apc-toast-container';
+		document.body.appendChild(container);
+	}
+	return container;
 }
 
 /** Class implementing the toast component */
 class ApiceToast {
 	// string with the toast type (error, warn, info, success)
-    #style;
+	#style;
 	// string with the toast title (or boolean false to remove the title area)
-    #title;
+	#title;
 	// string with the toast body or message
-    #body;
+	#body;
 	// icon to use
-    #icon;
+	#icon;
 	// top container representing the toast box
-    #box;
+	#box;
 	// integer with the number of seconds before dismissing the toast or boolean false to avoid user dismissal or boolean true to enable manual dismissal
-    #dismiss;
+	#dismiss;
 
-    constructor(specs) {
-        this.#style = specs.style;
-        this.#title = { text: specs.title };
-        this.#body = { text: specs.message };
-        this.#icon = { resource: specs.icon };
-        this.#dismiss = specs.dismiss;
-        this.#render();
-    }
+	constructor(specs) {
+		this.#style = specs.style;
+		this.#title = { text: specs.title };
+		this.#body = { text: specs.message };
+		this.#icon = { resource: specs.icon };
+		this.#dismiss = specs.dismiss;
+		this.#render();
+	}
 
 	/** Allows to obtain the title of the toast (if any) */
-    get title() {
-        if(!this.#title.text && this.#title.text !== false) {
+	get title() {
+		if (!this.#title.text && this.#title.text !== false) {
 			return $scope.defaultTitle[this.#style];
-        }
-        return this.#title.text;
-    }
+		}
+		return this.#title.text;
+	}
 
 	/** Returns the body message of the toast */
-    get message() {
-        return this.#body.text;
-    }
+	get message() {
+		return this.#body.text;
+	}
 
 	/** Internal method to render (or refresh) the title area */
-    #renderTitle() {
-        var text = this.title;
-        if(!text) {
-            if(this.#title.box) {
-                this.#title.box.style.display = 'none';
-            }
-            return;
-        }
-        if(!this.#title.box) {
-            this.#title.box = document.createElement('div');
-            this.#title.box.className = 'apc-header';
-            this.#box.appendChild(this.#title.box);
-        }
-        this.#title.box.style.display = 'block';
-        this.#title.box.innerHTML = text;
-    }
+	#renderTitle() {
+		var text = this.title;
+		if (!text) {
+			if (this.#title.box) {
+				this.#title.box.style.display = 'none';
+			}
+			return;
+		}
+		if (!this.#title.box) {
+			this.#title.box = document.createElement('div');
+			this.#title.box.className = 'apc-header';
+			this.#box.appendChild(this.#title.box);
+		}
+		this.#title.box.style.display = 'block';
+		this.#title.box.innerHTML = text;
+	}
 
 	/** Internal method to render (or refresh) the body area */
-    #renderBody() {
-        if(!this.#body.box) {
-            this.#body.box = document.createElement('div');
-            this.#body.box.className = 'apc-body';
-            this.#box.appendChild(this.#body.box);
-        }
-        this.#body.box.innerHTML = this.message;
-    }
+	#renderBody() {
+		if (!this.#body.box) {
+			this.#body.box = document.createElement('div');
+			this.#body.box.className = 'apc-body';
+			this.#box.appendChild(this.#body.box);
+		}
+		this.#body.box.innerHTML = this.message;
+	}
 
 	/** Internal method to render (or refresh) the icon */
-    #renderIcon() {
-        if(!this.#icon.resource) {
-            if(this.#icon.box) {
-                this.#icon.box.style.display = 'none';
-            }
-            return;
-        }
-        if(!this.#icon.box) {
-            this.#icon.box = document.createElement('div');
-            this.#icon.box.className = 'apc-icon';
-            this.#box.appendChild(this.#icon.box);
-        }
-        if(this.#icon.resource === true) {
-            this.#icon.box.innerHTML = '&nbsp;';
-        } else {
-            // TODO: implement
-        }
-    }
+	#renderIcon() {
+		if (!this.#icon.resource) {
+			if (this.#icon.box) {
+				this.#icon.box.style.display = 'none';
+			}
+			return;
+		}
+		if (!this.#icon.box) {
+			this.#icon.box = document.createElement('div');
+			this.#icon.box.className = 'apc-icon';
+			this.#box.appendChild(this.#icon.box);
+		}
+		if (this.#icon.resource === true) {
+			this.#icon.box.innerHTML = '&nbsp;';
+		} else {
+			// TODO: implement
+		}
+	}
 
 	/** Internal method to create the visual representation of the toast */
-    #render() {
-        if(!this.#box) {
-            this.#box = document.createElement('div');
-        }
-        this.#box.className = 'apc-toast apc-' + this.#style;
-        this.#renderIcon();
-        this.#renderTitle();
-        this.#renderBody();
-		if(typeof(this.#dismiss) === 'number') {
+	#render() {
+		if (!this.#box) {
+			this.#box = document.createElement('div');
+		}
+		this.#box.className = 'apc-toast apc-' + this.#style;
+		this.#renderIcon();
+		this.#renderTitle();
+		this.#renderBody();
+		if (typeof (this.#dismiss) === 'number') {
 			setTimeout(() => {
 				this.dismiss();
 			}, this.#dismiss * 1000);
-		} else if(this.#dismiss === true) {
+		} else if (this.#dismiss === true) {
 			this.#box.onclick = () => {
 				this.dismiss();
 			};
 			this.#box.className += ' apc-clickable';
 		}
-    }
+	}
 
 	/** Closes the toast */
 	dismiss() {
-		if(this.#box) {
+		if (this.#box) {
 			this.#box.style.animationName = 'bounce-out';
 			setTimeout(() => {
 				this.#box.parentElement.removeChild(this.#box);
@@ -141,9 +141,9 @@ class ApiceToast {
 	}
 
 	/** Adds the toast to a specific container */
-    appendTo(container) {
-        container.insertBefore(this.#box, container.firstChild);
-    }
+	appendTo(container) {
+		container.insertBefore(this.#box, container.firstChild);
+	}
 }
 
 /**
@@ -159,49 +159,49 @@ class ApiceToast {
  * 			- A string with the title (or boolean false to avoid the title) and the toast message
  */
 function renderToast(style, ...args) {
-    const specs =  { style: style, title: null, message: null, icon: true, dismiss: true };
-	if(args.length === 1) {
-		if(typeof(args[0]) === 'object') {
+	const specs = { style: style, title: null, message: null, icon: true, dismiss: true };
+	if (args.length === 1) {
+		if (typeof (args[0]) === 'object') {
 			Object.assign(specs, args[0]);
 		} else {
 			specs.message = args[0];
 		}
 	} else {
 		specs.title = args[0];
-        specs.message = args[1];
-		specs.dismiss = args[2]??true;
+		specs.message = args[1];
+		specs.dismiss = args[2] ?? true;
 	}
-    if(!specs.message) {
-        logger.warn('A toast has been requested without message. The toast has been ignored');
-        return;
-    }
-    const toast = new ApiceToast(specs);
-    const container = createToastContainer();
-    toast.appendTo(container);
+	if (!specs.message) {
+		logger.warn('A toast has been requested without message. The toast has been ignored');
+		return;
+	}
+	const toast = new ApiceToast(specs);
+	const container = createToastContainer();
+	toast.appendTo(container);
 }
 
 /** Creates an error toast */
-$module.error = function() {
-    renderToast('error', ...arguments);
+$module.error = function () {
+	renderToast('error', ...arguments);
 };
 
 /** Creates a warning toast */
-$module.warn = function() {
-    renderToast('warn', ...arguments);
+$module.warn = function () {
+	renderToast('warn', ...arguments);
 };
 
 /** Creates an information toast */
-$module.info = function() {
-    renderToast('info', ...arguments);
+$module.info = function () {
+	renderToast('info', ...arguments);
 };
 
 /** Creates a success toast */
-$module.success = function() {
-    renderToast('success', ...arguments);
+$module.success = function () {
+	renderToast('success', ...arguments);
 };
 
 /** Defines the maximum number of toast to use */
-$module.setMax = function() {
+$module.setMax = function () {
 	// TODO: implement
 };
 

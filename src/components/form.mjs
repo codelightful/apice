@@ -1,7 +1,6 @@
 import random from '../random.mjs';
 import element from '../element.mjs';
 import logging from '../logging.mjs';
-import { match } from 'sinon';
 
 const $moduleName = 'apice.ui.form';
 const $module = {};
@@ -66,6 +65,7 @@ function fillSelect(field, data) {
 			fillSelect(field, result);
 		}).catch(err => {
 			// FIXME: implement
+			console.err(err);
 		});
 		return;
 	} else if (!Array.isArray(data) || data.length === 0) {
@@ -188,7 +188,7 @@ class ApiceField {
 			specs.id = 'field_' + random.tinyId();
 		}
 		if (!specs.type) {
-			specs.type = 'input'
+			specs.type = 'input';
 		}
 		this.#id = specs.id;
 		this.#type = specs.type;
@@ -203,7 +203,7 @@ class ApiceField {
 		if (this.#label) {
 			const labelBox = document.createElement('label');
 			labelBox.setAttribute('for', this.#id);
-			labelBox.className = 'apc-label'
+			labelBox.className = 'apc-label';
 			labelBox.innerHTML = this.#label;
 			this.#group.appendChild(labelBox);
 		}
@@ -282,7 +282,7 @@ class ApiceForm {
 	}
 
 	addBreak() {
-		var component = new BlockElement('apc-break')
+		var component = new BlockElement('apc-break');
 		this.#addComponent(component);
 	}
 
@@ -369,7 +369,7 @@ function collectItem(collector, item) {
 function extractCollectables(container) {
 	const matches = container.select('[collect]');
 	if (!matches) {
-		logger.warn(`apice.form.collect.no_collectable_fields[${selector}]`);
+		logger.warn('apice.form.collect.no_collectable_fields');
 		return {};
 	}
 	const collector = {};

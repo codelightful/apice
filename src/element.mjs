@@ -7,7 +7,7 @@ function parseHTML(content) {
 	if (!content || typeof (content) !== 'string') {
 		return null;
 	}
-	const holder = document.createElement("div");
+	const holder = document.createElement('div');
 	holder.innerHTML = content;
 	return [...holder.childNodes];
 }
@@ -87,7 +87,7 @@ class SingleElement extends ApiceElement {
 	append() {
 		if (this.#element && arguments.length > 0) {
 			if (arguments.length > 1) {
-				for (var idx = 0; idx < arguments.length; idx++) {
+				for (let idx = 0; idx < arguments.length; idx++) {
 					this.append(arguments[idx]);
 				}
 			} else {
@@ -98,13 +98,13 @@ class SingleElement extends ApiceElement {
 					});
 				} else if (typeof (content) === 'string') {
 					content = parseHTML(content);
-					for (var idx = 0; idx < content.length; idx++) {
+					for (let idx = 0; idx < content.length; idx++) {
 						this.#element.appendChild(content[idx]);
 					}
 				} else if (isDOMElement(content)) {
 					this.#element.appendChild(content);
 				} else if (content instanceof NodeList) {
-					for (var idx = 0; idx < content.length; idx++) {
+					for (let idx = 0; idx < content.length; idx++) {
 						const node = content[idx];
 						this.#element.appendChild(node);
 					}
@@ -121,7 +121,7 @@ class SingleElement extends ApiceElement {
 	prepend() {
 		if (this.#element && arguments.length > 0) {
 			if (arguments.length > 1) {
-				for (var idx = 0; idx < arguments.length; idx++) {
+				for (let idx = 0; idx < arguments.length; idx++) {
 					this.prepend(arguments[idx]);
 				}
 			} else {
@@ -133,13 +133,13 @@ class SingleElement extends ApiceElement {
 					});
 				} else if (typeof (content) === 'string') {
 					content = parseHTML(content);
-					for (var idx = 0; idx < content.length; idx++) {
+					for (let idx = 0; idx < content.length; idx++) {
 						this.#element.insertBefore(content[idx], first);
 					}
 				} else if (isDOMElement(content)) {
 					this.#element.insertBefore(content, first);
 				} else if (content instanceof NodeList) {
-					for (var idx = 0; idx < content.length; idx++) {
+					for (let idx = 0; idx < content.length; idx++) {
 						const node = content[idx];
 						this.#element.insertBefore(node, first);
 					}

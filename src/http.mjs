@@ -115,7 +115,7 @@ class ApiceUrl {
 		this.#protocol = protocol ?? 'https';
 		this.#host = host;
 		this.#port = port ?? '80';
-		this.#path = this.#path ?? '';
+		this.#path = path ?? '';
 	}
 
 	/** Obtains the HTTP protocol used by the url */
