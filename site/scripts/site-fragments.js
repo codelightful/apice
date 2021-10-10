@@ -14,3 +14,9 @@ Apice.fragment.register('home', './site/fragments/site-home.html');
 Apice.fragment.register('toast', './site/fragments/components/site-toast.html', 'toast');
 
 Apice.fragment.register('badge', './site/fragments/components/site-badge.html');
+
+Apice.fragment.register('box', './site/fragments/components/site-box.html', 'box');
+
+Apice.fragment.register('short', './site/fragments/content-short.html');
+
+Apice.fragment.register('long', './site/fragments/content-long.html');

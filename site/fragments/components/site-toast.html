@@ -3,31 +3,45 @@
     <a href="#home">Go home</a>
     <div id="divToastForm" class="apc-form">
 		<div class="apc-select apc-sm">
-			<select>
-				<option value="">Please select...</option>
+			<select id="fldLevel" collect="level">
 				<option value="error">Error</option>
 				<option value="warn">Warning</option>
 				<option value="info">Information</option>
 				<option value="success">Success</option>
 			</select>
-			<label for="field_3bdb" class="apc-label">Type</label>
+			<label for="fldLevel" class="apc-label">Type</label>
 		</div>
 		<div class="apc-spacer apc-lg">&nbsp;</div>
+
 		<div class="apc-field apc-xl">
-			<input type="text">
-			<label for="field_f2b7" class="apc-label">Message</label>
+			<input type="text" id="fldMessage" collect="message" value="This is the text shown in the main body of the toast. It can be a long text and the toast will be adapted to its content">
+			<label for="fldMessage" class="apc-label">Message</label>
 		</div>
 		<div class="apc-check apc-sm">
-			<input type="checkbox">
-			<label for="field_6940" class="apc-label">Include a title</label>
+			<input type="checkbox" id="fldTitleFlag" collect="title.flag" checked>
+			<label for="fldTitleFlag" class="apc-label">Include a title</label>
 		</div>
 		<div class="apc-field apc-lg">
-			<input type="text">
-			<label for="field_560d" class="apc-label">Title</label>
+			<input type="text" id="fldTitleText" collect="title.text" value="Remove to use the Default Title">
+			<label for="fldTitleText" class="apc-label">Title</label>
 		</div>
-		<div class="apc-break apc-md">&nbsp;</div>
+
+		<div class="apc-check apc-sm">
+			<input type="checkbox" id="fldDismissFlag" collect="dismiss.enable" checked>
+			<label for="fldDismissFlag" class="apc-label">Dismissible</label>
+		</div>
+		<div class="apc-check apc-sm">
+			<input type="checkbox" id="fldManualDismiss" collect="dismiss.manual">
+			<label for="fldManualDismiss" class="apc-label">Manual Dismiss</label>
+		</div>
+		<div class="apc-field apc-xs">
+			<input type="text" id="fldDismissSeconds" collect="dismiss.seconds" value="5">
+			<label for="fldDismissSeconds" class="apc-label">Seconds</label>
+		</div>
+
+		<div class="apc-break">&nbsp;</div>
 		<div class="apc-button-bar">
-			<button id="btn_05ed" class="apc-button">Create Toast</button>
+			<button id="btnToastCreate" class="apc-button">Create Toast</button>
 		</div>
 	</div>
 </div>

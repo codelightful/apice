@@ -24,3 +24,5 @@ Apice.router.register('component/toast', () => {
         err.render(Apice.router.target());
     });
 });
+
+Apice.router.register('component/box', 'box');
