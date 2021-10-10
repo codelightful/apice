@@ -82,10 +82,10 @@ class ErrorHandler {
 			Apice.ui.toast.error(`${this.message}<div>${this.#guid}</div>`);
 			return;
 		}
-		target.content(`<div class="badge badge-error">\
-            <div class="header">Atention!</div>\
-            <div class="content">${this.message}</div>\
-            <div class="details">${this.#guid}</div>\
+		target.content(`<div class="apc-badge apc-error">\
+            <div class="apc-header">Atention!</div>\
+            <div class="apc-body">${this.message}</div>\
+            <div class="apc-footer">${this.#guid}</div>\
         </div>`);
 	}
 }

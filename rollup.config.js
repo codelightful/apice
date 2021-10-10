@@ -7,7 +7,7 @@ export default {
     output: {
         file: './dist/apice.min.js',
         format: 'iife',
-        name: 'apice',
+        name: 'Apice',
         sourcemap: true,
         plugins: [
             terser()

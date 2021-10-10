@@ -75,7 +75,7 @@ class ApiceFragment {
 	 */
 	render(selector) {
 		if (!selector) {
-			selector = 'body';
+			selector = document.body;
 		}
 		var target = element(selector);
 		if (!target) {

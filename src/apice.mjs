@@ -10,6 +10,7 @@ import fragment from './fragment.mjs';
 import router from './router.mjs';
 import error from './errorHandler.mjs';
 import ui from './components/ui.mjs';
+import form from './components/form.mjs';
 
 const $scope = {};
 $scope.version = { major: 0, minor: 1, patch: 1 };
@@ -39,4 +40,4 @@ function ready(callback) {
 	events.documentReady(callback);
 };
 
-export default { version, ready, logging, util, events, element, cookies, http, controller, fragment, router, error, ui };
+export default { version, ready, logging, util, events, element, cookies, http, controller, fragment, router, error, ui, form };

@@ -150,7 +150,7 @@ class SingleElement extends ApiceElement {
 	}
 
 	/**
-	 * Bind a specific ebent with a function
+	 * Bind a specific event with a function
 	 * @param eventName String with the event name
 	 * @param fnc Function to bind
 	 * @returns This element instance
@@ -163,6 +163,34 @@ class SingleElement extends ApiceElement {
 			events.addListener(this.#element, eventName, fnc);
 		}
 		return this;
+	}
+
+	/** 
+	 * Invokes the click event (when no argument is provided) or binds an action to the click 
+	 * event (receiving a function as the argument) 
+	 */
+	click() {
+		if (arguments.length === 0) {
+			// TODO: implement
+			return this;
+		}
+		if (typeof (arguments[0]) !== 'function') {
+			return this;
+		}
+		this.on('click', arguments[0]);
+		return this;
+	}
+
+	/**
+	 * Gets all the child elements that matches a specific selector
+	 * @param selector String with the selector
+	 * @returns Apice element wrapping the matches
+	 */
+	select(selector) {
+		if (!selector || typeof (selector) !== 'string') {
+			return null;
+		}
+		return applySelector(this.#element, selector);
 	}
 }
 
@@ -204,7 +232,11 @@ class MultipleElements extends ApiceElement {
 			if (typeof (targetFunction) === 'function') {
 				try {
 					const result = targetFunction.apply(node, args);
-					returnValue.push(result);
+					if (Array.isArray(result)) {
+						returnValue.push(...result);
+					} else {
+						returnValue.push(result);
+					}
 				} catch (ex) {
 					console.log(`itaca.element.node_call[${functionName}]`, ex);
 				}
@@ -246,6 +278,18 @@ class MultipleElements extends ApiceElement {
 		this.#nodeCall('on', arguments);
 		return this;
 	}
+
+	/** See SingleElement */
+	click() {
+		this.#nodeCall('click', arguments);
+		return this;
+	}
+
+	/** See SingleElement */
+	select() {
+		this.#nodeCall('select', arguments);
+		return this;
+	}
 }
 
 /** Allows to determine if a specific object instance is a DOM element */
@@ -255,11 +299,12 @@ function isDOMElement(obj) {
 
 /**
  * Internal function to create Web Elements according to a selector query
+ * @param root Element to use as the root to run the selector
  * @param selector String with the selector
  * @returns Instance of an Web Element wrapping the matched elements or null if there is no match
  */
-function applySelector(selector) {
-	const elements = document.querySelectorAll(selector);
+function applySelector(root, selector) {
+	const elements = root.querySelectorAll(selector);
 	// selector does not match DOM elements
 	if (elements.length === 0) {
 		return null;
@@ -292,7 +337,7 @@ const $module = function (selector) {
 		}
 		return $scope.bodySingleton;
 	} else if (typeof (selector) === 'string') {
-		return applySelector(selector);
+		return applySelector(document, selector);
 	} else if (selector instanceof ApiceElement) {
 		return selector;
 	} else if (isDOMElement(selector)) {
