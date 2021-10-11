@@ -1,6 +1,6 @@
 {
   "name": "apice",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "DOM based front-end utility framework",
   "main": "./src/apice.mjs",
   "scripts": {
@@ -9,7 +9,8 @@
     "watch": "rollup -c -w",
     "build": "rollup -c",
     "test": "mocha",
-    "coverage": "c8 mocha"
+    "coverage": "c8 mocha",
+	"lint": "eslint ./src/**/**.mjs"
   },
   "keywords": [
     "ui"
