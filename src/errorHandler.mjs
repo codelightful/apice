@@ -64,10 +64,15 @@ class ErrorHandler {
 	log() {
 		const logger = logging.getLogger(this.#module);
 		let entryText = `ref=[${this.#guid}]`;
+		if (this.#message) {
+			entryText += `\n-> ${this.#message}`;
+		}
 		if (this.#code) {
 			entryText += `\n-> (c) ${this.#code}`;
 		}
-		entryText += this.#getCauseLog(this.#cause);
+		if(this.#cause) {
+			entryText += this.#getCauseLog(this.#cause);
+		}
 		logger.error(entryText);
 	}
 

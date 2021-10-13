@@ -24,21 +24,21 @@ $scope.target = null;
  * @param eventName String with the name of the event that triggered the change (mostly for tracing purposes)
  */
 function onHashChange(eventName) {
-	logger.debug('Hash change triggered. event=' + eventName);
+	logger.debug('Hash change triggered. event={0}', eventName);
 	const hash = $module.hash();
 	var route = $module.match(hash);
 	if (route) {
-		logger.debug('Serving route: ' + route.pattern);
+		logger.debug('Serving route. pattern={0}', route.pattern);
 	} else if ($scope.defaultRoute && (!hash || !$scope.notFoundRoute)) {
 		if (hash) {
-			logger.warn('Route not found. Serving default hash=' + hash);
+			logger.warn('Route not found. Serving default hash={0}', hash);
 		} else {
 			logger.debug('No hash found. Serving default router');
 		}
 		route = $scope.defaultRoute;
 	} else if ($scope.notFoundRoute) {
 		// TODO: define actions when there is no matching route and default hash is not defined
-		logger.warn('Route not found. hash=' + hash + ' route=' + $scope.notFoundRoute.pattern);
+		logger.warn('Route not found. Using no-found default routing. hash={0}', hash);
 		route = $scope.notFoundRoute;
 	} else {
 		errorHandler.render({
@@ -48,7 +48,7 @@ function onHashChange(eventName) {
 		}); // FIXME: should we use a selector like $scope.target
 		return;
 	}
-	route.serve();
+	route.serve(hash);
 }
 
 /**
@@ -140,15 +140,19 @@ class ApiceRoute {
 	/**
 	 * Serves the route represented by the current instance, triggering its associated action
 	 */
-	serve() {
+	serve(hash) {
 		try {
 			if (typeof (this.#action) === 'function') {
-				this.#action();
+				logger.trace('Serving routing from function. pattern={0}', this.pattern);
+				this.#action(hash);
 			} else if (typeof (this.#action) === 'string') {
+				logger.trace('Serving routing from fragment ID. pattern={0} fragment={1}', this.pattern, this.#action);
 				fragment(this.#action).render($scope.target);
 			} else if (fragment.isFragment(this.#action)) {
+				logger.trace('Serving routing from fragment instance. pattern={0}', this.pattern);
 				this.#action.render($scope.target);
 			} else if (typeof (this.#action.serve) === 'function') {
+				logger.trace('Serving routing from serviced instance. pattern={0}', this.pattern);
 				this.#action.serve();
 			} else {
 				throw Error(`apice.router.invalid_action[${this.pattern}]`);

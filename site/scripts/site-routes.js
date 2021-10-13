@@ -2,7 +2,7 @@
 
 // A route can be defined to handle any unmatching path
 Apice.router.register('404', (hash) => {
-    Apice.errorHandler.render(Apice.router.target(), { message: `An invalid resource has been requested: ${hash}`});
+    Apice.error.render({ message: `An unknown routing resource has been requested: ${hash}`}, Apice.router.target());
 }).asNotFound();
 
 // A router may contain a reference to a fragment, when the route is triggered the fragment will be served in the
@@ -26,3 +26,5 @@ Apice.router.register('component/toast', () => {
 });
 
 Apice.router.register('component/box', 'box');
+
+Apice.router.register('component/dialog', 'dialog');

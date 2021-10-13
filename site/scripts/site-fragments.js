@@ -17,6 +17,8 @@ Apice.fragment.register('badge', './site/fragments/components/site-badge.html');
 
 Apice.fragment.register('box', './site/fragments/components/site-box.html', 'box');
 
+Apice.fragment.register('dialog', './site/fragments/components/site-dialog.html', 'dialog');
+
 Apice.fragment.register('short', './site/fragments/content-short.html');
 
 Apice.fragment.register('long', './site/fragments/content-long.html');

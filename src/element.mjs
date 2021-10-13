@@ -150,6 +150,17 @@ class SingleElement extends ApiceElement {
 	}
 
 	/**
+	 * Adds the current instance as a child inside another element
+	 * @param target String with the target selector, or reference to the HTMLElement for it, or Apice element reference
+	 */
+	appendTo(target) {
+		target = $module(target);
+		if (target) {
+			target.append(this);
+		}
+	}
+
+	/**
 	 * Bind a specific event with a function
 	 * @param eventName String with the event name
 	 * @param fnc Function to bind
@@ -191,6 +202,36 @@ class SingleElement extends ApiceElement {
 			return null;
 		}
 		return applySelector(this.#element, selector);
+	}
+
+	/**
+	 * Adds a specific class to the current element
+	 * @param className String with the class name to add
+	 */
+	addClass(className) {
+		if (className) {
+			this.#element.classList.add(className);
+		}
+		return this;
+	}
+
+	/**
+	 * Removes a specific class from the current element
+	 * @param className String with the class name to remove
+	 */
+	removeClass(className) {
+		if (className) {
+			this.#element.classList.remove(className);
+		}
+		return this;
+	}
+
+	/** Sets a specific css class name to the current element */
+	setClass(className) {
+		if (className) {
+			this.#element.className = className;
+		}
+		return this;
 	}
 }
 
@@ -274,6 +315,12 @@ class MultipleElements extends ApiceElement {
 	}
 
 	/** See SingleElement */
+	appendTo() {
+		this.#nodeCall('appendTo', arguments);
+		return this;
+	}
+
+	/** See SingleElement */
 	on() {
 		this.#nodeCall('on', arguments);
 		return this;
@@ -288,6 +335,24 @@ class MultipleElements extends ApiceElement {
 	/** See SingleElement */
 	select() {
 		this.#nodeCall('select', arguments);
+		return this;
+	}
+
+	/** See SingleElement */
+	addClass() {
+		this.#nodeCall('addClass', arguments);
+		return this;
+	}
+
+	/** See SingleElement */
+	removeClass() {
+		this.#nodeCall('removeClass', arguments);
+		return this;
+	}
+
+	/** See SingleElement */
+	setClass() {
+		this.#nodeCall('setClass', arguments);
 		return this;
 	}
 }
@@ -372,6 +437,15 @@ $module.append = function (target, source) {
 		throw Error(`apice.element.append.unknown_target[${target}]`);
 	}
 	targetElement.append(source);
+};
+
+/**
+ * Allows to determine if a specific object is an Apice element
+ * @param obj Object instance to evaluate
+ * @returns Boolean value to determine if the object is an Apice element or not
+ */
+$module.isApiceElement = function (obj) {
+	return (obj && obj instanceof ApiceElement);
 };
 
 export default $module;

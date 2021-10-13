@@ -19,7 +19,7 @@ a0d468 - Green light accent
 Z-Index
 -100-0 - Containers
 100-499 - Content
-500-599 - Content overlays
+500-599 - Masks / content overlays
 600-699 - Windows
 700-799 - Dialogs / Toasts
 */
@@ -62,6 +62,62 @@ Z-Index
         transform: scale(0.3) translate3d(0,0,0);
     }
 } 
+
+@keyframes scale-in {
+    0%{
+        opacity: 0;
+        transform: scale(0.3) translate(-50%, -50%);
+    }
+    70%{
+        opacity: 0.5;
+        transform: scale(1.1) translate(-50%, -50%);
+    }
+    90%{
+        opacity: 0.7;
+        transform: scale(1) translate(-50%, -50%);
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+@keyframes fade-in {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+
+@keyframes half-fade-in {
+    0%{
+		display: block;
+        opacity: 0;
+    }
+    100%{
+        opacity: 0.6;
+    }
+}
+
+@keyframes half-fade-out {
+    0%{
+        opacity: 0.6;
+    }
+    100%{
+        opacity: 0;
+		display: none;
+    }
+}
 
 /*===========================================================================*/
 /* General Elements */
@@ -197,6 +253,141 @@ Z-Index
     background-position: top;
     background-size: contain;
     background-repeat: no-repeat;
+}
+
+/*===========================================================================*/
+/* MASK */
+/*===========================================================================*/
+/* Layer used to block access to content */
+.apc-mask {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #ffffff;
+	z-index: 500;
+}
+
+.apc-mask.apc-open {
+	animation-name: half-fade-in;
+    animation-duration: 200ms;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+.apc-mask.apc-closed {
+	animation-name: half-fade-out;
+    animation-duration: 300ms;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+/*===========================================================================*/
+/* DIALOGS */
+/*===========================================================================*/
+.apc-dialog {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border: solid 1px #3a3a3a;
+	border-radius: 5px;
+	min-width: 300px;
+	max-width: 60%;
+	min-height: 50px;
+	max-height: 50%;
+	display: flex;
+	flex-direction: column;
+	background-color: #ffffff;
+	box-shadow: 5px 5px 8px -1px rgba(0,0,0,0.4);
+	z-index: 700;
+}
+
+.apc-dialog.apc-open {
+	animation-name: scale-in;
+    animation-duration: 300ms;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+.apc-dialog.apc-closed {
+	animation-name: fade-out;
+    animation-duration: 500ms;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+.apc-dialog > .apc-header {
+	font-size: 1.2rem;
+	font-weight: bolder;
+	padding: 5px 10px;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+}
+
+.apc-dialog > .apc-body {
+	padding: 10px;
+	flex-grow: 1;
+}
+
+.apc-dialog > .apc-footer {
+	padding: 10px 10px 15px 10px;
+}
+.apc-dialog > .apc-footer.apc-button-bar {
+	text-align: right;
+}
+
+/* Container with the closing button */
+.apc-dialog > .apc-closing {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+}
+.apc-dialog > .apc-closing > button {
+	opacity: .8;
+	box-sizing: content-box;
+	border: none;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position : center;
+	background-size: 1.1em;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cg id='Layer_2' data-name='Layer 2'%3E%3Cg id='Layer_1-2' data-name='Layer 1'%3E%3Cpath d='M27.73,29.5a1.88,1.88,0,0,1-1.32-.58L15,17.51,3.59,28.92a1.88,1.88,0,0,1-1.32.58A1.76,1.76,0,0,1,1,29a1.73,1.73,0,0,1,.05-2.54L12.49,15,1.08,3.59A1.74,1.74,0,0,1,1.05,1,1.74,1.74,0,0,1,2.27.5a1.88,1.88,0,0,1,1.32.58L15,12.49,26.41,1.08A1.88,1.88,0,0,1,27.73.5,1.76,1.76,0,0,1,29,1.05a1.73,1.73,0,0,1,0,2.54L17.51,15,28.92,26.41a1.8,1.8,0,0,1-1.19,3.09Z'/%3E%3Cpath d='M27.72,1a1.26,1.26,0,0,1,.87.38,1.25,1.25,0,0,1,0,1.86L24.3,7.51l-6.79,6.78-.7.71.7.71,6.79,6.78,4.27,4.27a1.24,1.24,0,0,1,.05,1.83,1.29,1.29,0,0,1-.89.41,1.43,1.43,0,0,1-1-.43L22.49,24.3l-6.78-6.79-.71-.7-.71.7L7.51,24.3,3.24,28.57a1.43,1.43,0,0,1-1,.43,1.25,1.25,0,0,1-.86-.38,1.25,1.25,0,0,1,0-1.86L5.7,22.49l6.79-6.78.7-.71-.7-.71L5.7,7.51,1.43,3.24a1.24,1.24,0,0,1-.05-1.83A1.29,1.29,0,0,1,2.28,1a1.41,1.41,0,0,1,1,.43L7.51,5.7l6.78,6.79.71.7.71-.7L22.49,5.7l4.27-4.27a1.41,1.41,0,0,1,1-.43m0-1a2.36,2.36,0,0,0-1.67.73L21.78,5,15,11.78,8.22,5,4,.73A2.36,2.36,0,0,0,2.28,0,2.23,2.23,0,0,0,.69.69,2.23,2.23,0,0,0,.73,4L5,8.22,11.78,15,5,21.78.73,26.05a2.23,2.23,0,0,0,0,3.26A2.22,2.22,0,0,0,2.27,30,2.36,2.36,0,0,0,4,29.27L8.22,25,15,18.22,21.78,25l4.27,4.26a2.36,2.36,0,0,0,1.68.73,2.3,2.3,0,0,0,1.54-3.95L25,21.78,18.22,15,25,8.22,29.27,4a2.23,2.23,0,0,0,0-3.26A2.23,2.23,0,0,0,27.72,0Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+	width: 15px;
+	height: 20px;
+	cursor: pointer !important;
+}
+
+.apc-dialog.apc-error {
+    border-color: #da4453;
+}
+.apc-dialog.apc-error > .apc-header {
+	color: #da4453;
+	border-color: #da4453;
+}
+
+.apc-dialog.apc-warn {
+    border-color: #f68b42;
+}
+.apc-dialog.apc-warn > .apc-header {
+	color: #f68b42;
+	border-color: #f68b42;
+}
+
+.apc-dialog.apc-info {
+    border-color: #4a89dc;
+}
+.apc-dialog.apc-info > .apc-header {
+	color: #4a89dc;
+	border-color: #4a89dc;
+}
+
+.apc-dialog.apc-success {
+    border-color: #8cc152;
+}
+.apc-dialog.apc-success > .apc-header {
+	color: #8cc152;
+	border-color: #8cc152;
 }
 
 /*===========================================================================*/
@@ -366,6 +557,36 @@ Z-Index
 }
 
 /*===========================================================================*/
+/* BUTTONS */
+/*===========================================================================*/
+.apc-button-bar {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.apc-button-bar > .apc-button {
+    margin-left: 5px;
+}
+
+.apc-button {
+    border: solid;
+    border-radius: 10px;
+	border-color: transparent;
+    padding: 5px 10px;
+    background-color: #616161;
+    color: #ffffff;
+    cursor: pointer;
+	font-size: 0.95rem;
+}
+.apc-button:hover {
+    background-color: #494949;
+    color: #ffffff;
+}
+.apc-button:active {
+    background-color: #8d8d8d;
+    color: #ffffff;
+}
+
+/*===========================================================================*/
 /* FORM */
 /*===========================================================================*/
 /* Top form container */
@@ -458,30 +679,6 @@ Z-Index
 }
 .apc-select > select:focus {
     border: solid 2px #5d9cec;
-}
-
-.apc-button-bar {
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-.apc-button {
-    border: solid 2px #4a89dc;
-    border-radius: 5px;
-    padding: 8px 12px;
-    background-color: #4a89dc;
-    color: #ffffff;
-    cursor: pointer;
-}
-.apc-button:hover {
-    border: solid 2px #5d9cec;
-    background-color: #5d9cec;
-    color: #ffffff;
-}
-.apc-button:active {
-    border: solid 2px #4a89dc;
-    background-color: #ffffff;
-    color: #4a89dc;
 }
 
 @media screen and (max-width: 640px) {
