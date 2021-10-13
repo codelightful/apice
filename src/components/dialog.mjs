@@ -8,27 +8,29 @@ const $moduleName = 'apice.ui.dialog';
 const $module = {};
 const logger = logging.getLogger($moduleName);
 const $scope = {};
-// holds the current open dialog (if any) or null if there is no open dialog
+// Holds the current open dialog (if any) or null if there is no open dialog
 $scope.current = null;
-// holds the queue of dialogs
+// Holds the queue of dialogs
 $scope.queue = [];
-// will hold the dialog top container
+// Will hold the dialog top container
 $scope.container = null;
-// will hold the dialog header container
+// Reference to the closing button
+$scope.closing = null;
+// Will hold the dialog header container
 $scope.header = null;
-// will hold the dialog body container
+// Will hold the dialog body container
 $scope.body = null;
-// will hold the dialog footer container
+// Will hold the dialog footer container
 $scope.footer = null;
 // indicator of the dialog visual status 1=open 0=closed
 $scope.status = 0;
 
+/** Contains all the default titles */
 $scope.titles = {};
 $scope.titles['error'] = 'Atention!';
 $scope.titles['warn'] = 'Warning!';
 $scope.titles['info'] = 'Information';
 $scope.titles['success'] = 'Success!';
-
 
 /** Removes a dialog instance from the queue */
 function removeFromQueue(dialog) {
@@ -71,6 +73,10 @@ function createDialog() {
 		}
 		container = element(container);
 		$scope.container = container;
+		$scope.closing = document.createElement('button');
+		$scope.closing.innerHTML = '&nbsp;';
+		const closingArea = createDialogPart(container, 'apc-closing');
+		closingArea.content($scope.closing);
 		$scope.header = createDialogPart(container, 'apc-header');
 		$scope.body = createDialogPart(container, 'apc-body');
 		$scope.footer = createDialogPart(container, 'apc-footer apc-button-bar');
@@ -78,7 +84,7 @@ function createDialog() {
 }
 
 /** Creates and renders the HTMLElements to represent a dialog */
-function openDialog(style, render) {
+function openDialog(dialog, render) {
 	if ($scope.status === 1) {
 		logger.debug('Dialog container is already visible');
 		return Promise.resolve();
@@ -90,7 +96,7 @@ function openDialog(style, render) {
 	const promises = [];
 	promises[0] = mask.show();
 	promises[1] = new Promise(resolve => {
-		events.waitAnimation($scope.container, 'apc-dialog apc-open apc-' + style, resolve);
+		events.waitAnimation($scope.container, 'apc-dialog apc-open apc-' + dialog.style, resolve);
 	});
 	return Promise.all(promises);
 }
@@ -155,11 +161,14 @@ function triggerEvents(events) {
 function renderButton(dialog, specs) {
 	if(!specs) {
 		return;
-	} else if(specs === 'close') {
-		specs = { label: 'Close', close: true };
+	} else if(typeof(specs) === 'string') {
+		specs = { label: specs, close: true };
 	}
 	const button = document.createElement('button');
 	button.className = 'apc-button';
+	if(specs.className) {
+		button.className += ' ' + specs.className;
+	}
 	button.innerHTML = specs.label;
 	if(typeof(specs.action) === 'function') {
 		button.onclick = () => {
@@ -216,6 +225,11 @@ class ApiceDialog {
 		return this.#title;
 	}
 
+	/** Allows to obtain a string to determine the type of dialog (error, warn, info, success) */
+	get style() {
+		return this.#style;
+	}
+
 	/**
 	 * Opens the dialog
 	 * @returns A promise to be fulfilled after the dialog is opened
@@ -232,7 +246,10 @@ class ApiceDialog {
 		}
 		logger.debug('Opening dialog instance. id={0}', this.id);
 		$scope.current = this;
-		return openDialog(this.#style, () => {
+		return openDialog(this, () => {
+			$scope.closing.onclick = () => {
+				this.close();
+			};
 			$scope.header.content(this.title);
 			$scope.body.content(this.#body);
 			$scope.footer.content('');
@@ -272,7 +289,7 @@ class ApiceDialog {
 
 	/**
 	 * Adds a button to the current dialog
-	 * @param specs Button specification or string with the keyword 'close' to add a close button.
+	 * @param specs Button specification or string with the button label to create a close button.
 	 * 			The button specification will use the following attributes:
 	 * 			- label: String with the button label or content
 	 * 			- close: Boolean value to define if the button should close the dialog after the action

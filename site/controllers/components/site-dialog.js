@@ -3,11 +3,11 @@
 function createDialog(style, id, body) {
 	const method = Apice.ui.dialog[style];
 	const dialog = method({ id: id, body: body });
-	dialog.addButton('close');
-	dialog.addButton({ label: 'Ok', close: true, action: function() {
+	dialog.addButton({ label: 'Ok', close: true, className: 'apc-primary', action: function() {
 		console.log('The Ok button has been presed on ' + id);
 		return true;
 	}});
+	dialog.addButton('Close');
 	dialog.onClose(() => {
 		console.log('Close event: ' + id);
 	});

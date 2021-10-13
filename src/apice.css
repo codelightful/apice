@@ -1,20 +1,37 @@
 /*
 ffebee - Red extra light
-e3f2fd - Blue extra light
+d5e6f5 - Blue extra light
 fff8e1 - Yellow extra light
-e8f5e9 - Green extra light
+f2f8eb - Green extra light
+fff1e2 - Orange extra light
 
-da4453 - Rojo dark accent 
-4a89dc - Azul dark accent
-f68b42 - Yellow dark accent
-8cc152 - Green dark accent
+f9c6cb - Red light
+61b3e6 - Blue light
+d8eac5 - Green light
+b2d58b - Green pale
+ffd7aa - Orange light
 
-ed5565 - Rojo light accent 
-5d9cec - Azul light accent
-ffce54 - Yellow light accent
-a0d468 - Green light accent
+da4453 - Red brilliant
+ed5565 - Red brilliant light
+128dda - Blue brilliant
+8cc152 - Green brilliant
+f68b42 - Orange brilliant
+ffce54 - Yellow brilliant
 
-3a3a3a - dark gray
+a10202 - Red dark
+0e549a - Blue dark
+e65100 - Orange dark
+
+1a237e - Blue extra dark
+1b5e20 - Green extra dark
+993600 - Orange extra dark
+
+e8e8e8 - Gray extra light
+dddddd - Gray light
+cccccc - Gray medium
+888888 - Gray accent
+999999 - Button gray
+3a3a3a - Dark gray
 
 Z-Index
 -100-0 - Containers
@@ -152,39 +169,41 @@ Z-Index
 /* Body inside a badge */
 .apc-badge > .apc-body {
     padding-top: 5px;
+	color: #000000;
 }
 
 /* Footer inside a badge */
 .apc-badge > .apc-footer {
     padding-top: 5px;
     font-size: 0.8rem;
+	color: #000000;
 }
 
 /* Badge with an error message */
 .apc-badge.apc-error {
-    background-color: #ffffff;
-    border: solid 1px #ff4444;    
-    color: #cc0000;
+    background-color: #f9c6cb;
+    border: solid 1px #f9c6cb;    
+    color: #a10202;
 }
 
 /* Badge with a warning message */
 .apc-badge.apc-warn {
-    background-color: #ffffff;
-    border: solid 1px #ff8800;    
-    color: #e65100;
+    background-color: #ffd7aa;
+    border: solid 1px #ffd7aa;    
+    color: #993600;
 }
 
 /* Badge with an informational message */
 .apc-badge.apc-info {
-    background-color: #ffffff;
-    border: solid 1px #4285f4;    
-    color: #1a237e;
+    background-color: #d5e6f5;
+    border: solid 1px #d5e6f5;    
+    color: #0e549a;
 }
 
 /* Badge with a success message */
 .apc-badge.apc-success {
-    background-color: #ffffff;
-    border: solid 1px #007e33;    
+    background-color: #d8eac5;
+    border: solid 1px #d8eac5;    
     color: #1b5e20;
 }
 
@@ -234,7 +253,8 @@ Z-Index
 /*===========================================================================*/
 /* Element containing content with well defined boundaries */
 .apc-card {
-	border: solid 1px #3a3a3a;
+	border: solid 1px #dddddd;
+	background-color: #e8e8e8;
 	padding: 8px;
 	border-radius: 5px;
 }
@@ -291,7 +311,7 @@ Z-Index
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	border: solid 1px #3a3a3a;
+	border: none;
 	border-radius: 5px;
 	min-width: 300px;
 	max-width: 60%;
@@ -304,6 +324,7 @@ Z-Index
 	z-index: 700;
 }
 
+/* Implements the animation and look and feel when a dialog gets open */
 .apc-dialog.apc-open {
 	animation-name: scale-in;
     animation-duration: 300ms;
@@ -311,19 +332,18 @@ Z-Index
     animation-fill-mode: forwards;
 }
 
+/* Implements the animation and look and feel when a dialog gets closed */
 .apc-dialog.apc-closed {
 	animation-name: fade-out;
-    animation-duration: 500ms;
+    animation-duration: 200ms;
     animation-timing-function: linear;
     animation-fill-mode: forwards;
 }
 
 .apc-dialog > .apc-header {
-	font-size: 1.2rem;
+	font-size: 0.9rem;
 	font-weight: bolder;
 	padding: 5px 10px;
-	border-bottom-style: solid;
-	border-bottom-width: 1px;
 }
 
 .apc-dialog > .apc-body {
@@ -353,41 +373,53 @@ Z-Index
 	background-position : center;
 	background-size: 1.1em;
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cg id='Layer_2' data-name='Layer 2'%3E%3Cg id='Layer_1-2' data-name='Layer 1'%3E%3Cpath d='M27.73,29.5a1.88,1.88,0,0,1-1.32-.58L15,17.51,3.59,28.92a1.88,1.88,0,0,1-1.32.58A1.76,1.76,0,0,1,1,29a1.73,1.73,0,0,1,.05-2.54L12.49,15,1.08,3.59A1.74,1.74,0,0,1,1.05,1,1.74,1.74,0,0,1,2.27.5a1.88,1.88,0,0,1,1.32.58L15,12.49,26.41,1.08A1.88,1.88,0,0,1,27.73.5,1.76,1.76,0,0,1,29,1.05a1.73,1.73,0,0,1,0,2.54L17.51,15,28.92,26.41a1.8,1.8,0,0,1-1.19,3.09Z'/%3E%3Cpath d='M27.72,1a1.26,1.26,0,0,1,.87.38,1.25,1.25,0,0,1,0,1.86L24.3,7.51l-6.79,6.78-.7.71.7.71,6.79,6.78,4.27,4.27a1.24,1.24,0,0,1,.05,1.83,1.29,1.29,0,0,1-.89.41,1.43,1.43,0,0,1-1-.43L22.49,24.3l-6.78-6.79-.71-.7-.71.7L7.51,24.3,3.24,28.57a1.43,1.43,0,0,1-1,.43,1.25,1.25,0,0,1-.86-.38,1.25,1.25,0,0,1,0-1.86L5.7,22.49l6.79-6.78.7-.71-.7-.71L5.7,7.51,1.43,3.24a1.24,1.24,0,0,1-.05-1.83A1.29,1.29,0,0,1,2.28,1a1.41,1.41,0,0,1,1,.43L7.51,5.7l6.78,6.79.71.7.71-.7L22.49,5.7l4.27-4.27a1.41,1.41,0,0,1,1-.43m0-1a2.36,2.36,0,0,0-1.67.73L21.78,5,15,11.78,8.22,5,4,.73A2.36,2.36,0,0,0,2.28,0,2.23,2.23,0,0,0,.69.69,2.23,2.23,0,0,0,.73,4L5,8.22,11.78,15,5,21.78.73,26.05a2.23,2.23,0,0,0,0,3.26A2.22,2.22,0,0,0,2.27,30,2.36,2.36,0,0,0,4,29.27L8.22,25,15,18.22,21.78,25l4.27,4.26a2.36,2.36,0,0,0,1.68.73,2.3,2.3,0,0,0,1.54-3.95L25,21.78,18.22,15,25,8.22,29.27,4a2.23,2.23,0,0,0,0-3.26A2.23,2.23,0,0,0,27.72,0Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-	width: 15px;
-	height: 20px;
+	width: 8px;
+	height: 8px;
 	cursor: pointer !important;
 }
 
 .apc-dialog.apc-error {
-    border-color: #da4453;
+	background-color: #ffebee;
 }
 .apc-dialog.apc-error > .apc-header {
-	color: #da4453;
-	border-color: #da4453;
+	color: #a10202;
+	background-color: #f9c6cb;
+}
+.apc-dialog.apc-error .apc-button.apc-primary {
+	background-color: #da4453;
+	color: #ffebee;
 }
 
 .apc-dialog.apc-warn {
-    border-color: #f68b42;
+	background-color: #fff1e2;
 }
 .apc-dialog.apc-warn > .apc-header {
 	color: #f68b42;
-	border-color: #f68b42;
+	background-color: #ffd7aa;
+}
+.apc-dialog.apc-warn .apc-button.apc-primary {
+	background-color: #f68b42;
+	color: #ffebee;
 }
 
 .apc-dialog.apc-info {
-    border-color: #4a89dc;
+	background-color: #d5e6f5;
 }
 .apc-dialog.apc-info > .apc-header {
-	color: #4a89dc;
-	border-color: #4a89dc;
+	color: #1a237e;
+	background-color: #61b3e6;
 }
 
 .apc-dialog.apc-success {
-    border-color: #8cc152;
+	background-color: #f2f8eb;
 }
 .apc-dialog.apc-success > .apc-header {
-	color: #8cc152;
-	border-color: #8cc152;
+	color: #1b5e20;
+	background-color: #d8eac5;
+}
+.apc-dialog.apc-success .apc-button.apc-primary {
+	background-color: #8cc152;
+	color: #fff8e1;
 }
 
 /*===========================================================================*/
@@ -461,8 +493,8 @@ Z-Index
 }
 
 .apc-toast.apc-info {
-    border-color: #4a89dc;
-    background-color: #4a89dc;
+    border-color: #128dda;
+    background-color: #128dda;
     color: #ffffff;
 }
 .apc-toast.apc-info > .apc-icon {
@@ -572,10 +604,11 @@ Z-Index
     border-radius: 10px;
 	border-color: transparent;
     padding: 5px 10px;
-    background-color: #616161;
-    color: #ffffff;
+    background-color: #999999;
+    color: #3a3a3a;
     cursor: pointer;
 	font-size: 0.95rem;
+	font-weight: bolder;
 }
 .apc-button:hover {
     background-color: #494949;
@@ -584,6 +617,10 @@ Z-Index
 .apc-button:active {
     background-color: #8d8d8d;
     color: #ffffff;
+}
+
+.apc-button.apc-primary {
+	background-color: #61b3e6;
 }
 
 /*===========================================================================*/

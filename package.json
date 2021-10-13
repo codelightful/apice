@@ -1,6 +1,6 @@
 {
   "name": "apice",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "DOM based front-end utility framework",
   "main": "./src/apice.mjs",
   "scripts": {
