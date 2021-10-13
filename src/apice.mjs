@@ -13,7 +13,7 @@ import ui from './components/ui.mjs';
 import form from './components/form.mjs';
 
 const $scope = {};
-$scope.version = { major: 0, minor: 1, patch: 2 };
+$scope.version = { major: 0, minor: 1, patch: 3 };
 console.log(`%cApice Framework ${version()}`, 'color: #64dd17;');
 
 /**
