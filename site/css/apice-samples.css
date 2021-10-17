@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500&display=swap');
 
+:root {
+	--samples-bg-color: #ffffff;
+	--samples-primary-dark: #2b4c8b;
+	--samples-primary-light: #456daa;
+	--samples-secondary-dark: #524365;
+	--samples-secondary-light: #5A5387;
+	--samples-accent: #42ccc8;
+	--samples-primary-dark-text-color: #fefefe;
+  }
+
 * {
     font-family: 'Ubuntu', sans-serif;
     font-weight: 300;
@@ -7,15 +17,41 @@
 
 body {
     margin: 0;
-    background-color: #ffffff;
+    background-color: var(--samples-bg-color);
 }
 
 /* Navigation bar with a dark accent */
 nav.dark {
-    background-color: #7D65F5;
-    color: #fefefe;
+    background-color: var(--samples-primary-dark);
+    color: var(--samples-primary-dark-text-color);
     padding: 10px;
+	height: 50px;
 }
 nav > h1 {
     margin: 0;
+	line-height: 50px;
+	font-weight: 300;
+	font-size: 1.6;
+}
+
+.apc-hero {
+	display: flex;
+	flex-direction: row;
+}
+.apc-hero > .apc-content {
+	flex-grow: 1;
+	padding: 20px;
+}
+.apc-hero > .apc-content > .apc-header {
+	font-size: 3rem;
+	font-weight: 500;
+	padding: 10px;
+}
+.apc-hero > .apc-content > .apc-body {
+	font-size: 1.6rem;
+	padding: 10px;
+}
+.apc-hero > .apc-image {
+	flex-shrink: 1;
+	padding: 20px;
 }
