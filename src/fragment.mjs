@@ -35,8 +35,6 @@ class ApiceFragment {
 			return Promise.resolve();
 		}
 		return new Promise((resolve, reject) => {
-			// FIXME: does this really need a settimeout
-			//setTimeout(() => {
 			var controllerType = typeof (this.#controller);
 			if (controllerType === 'function') {
 				logger.debug('Serving fragment controller function. fragment={0}', this.#name);
@@ -60,7 +58,6 @@ class ApiceFragment {
 					}));
 				});
 			}
-			//}, 0);
 		});
 	}
 
@@ -88,11 +85,11 @@ class ApiceFragment {
 		return new Promise((resolve, reject) => {
 			http.request(this.#source, { method: 'GET' }).then((response) => {
 				// TODO: add a response interceptor
-				// FIXME: does this really needs a settimeout
-				//setTimeout(() => {
 				target.content(response.content);
-				this.#runController().then(resolve).catch(reject);
-				//}, 0);
+				// NOTE: this timeout is required to execute the controller AFTER the content has been rendered 
+				setTimeout(() => {
+					this.#runController().then(resolve).catch(reject);
+				}, 0);
 			}).catch((ex) => {
 				reject(errorHandler.create({
 					module: $moduleName,

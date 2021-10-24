@@ -49,7 +49,6 @@ function createHeader(specs, container) {
  */
 function createBody(container) {
 	const elem = createDiv('apc-body');
-	elem.innerHTML = 'BOX-CONTENT'; // FIXME: remove
 	container.appendChild(elem);
 	return element(elem);
 }
@@ -62,7 +61,6 @@ function createBody(container) {
  */
 function createFooter(specs, container) {
 	const elem = createDiv('apc-footer');
-	elem.innerHTML = 'BOX-FOOTER'; // FIXME: remove
 	elem.style.display = 'none';
 	container.appendChild(elem);
 	return element(elem);
@@ -70,23 +68,23 @@ function createFooter(specs, container) {
 
 /** Creates the container of an ApiceBox and its internal areas */
 function createBoxContainer(specs, box) {
-	const container = createDiv('apc-box', specs.id);
-	if (specs.fullscreen) {
-		container.className += ' apc-full';
-	} else if (Array.isArray(specs.size)) {
-		container.className += ' apc-non-full';
-		container.style.width = specs.size[0];
-		container.style.height = specs.size[1];
-	}
 	const content = createDiv('apc-box-content');
 	const parts = {};
 	parts.header = createHeader(specs, content);
 	parts.body = createBody(content);
 	parts.footer = createFooter(specs, content);
-	parts.area = container;
-	container.appendChild(content);
+
+	parts.box = createDiv('apc-box', specs.id);
+	if (specs.fullscreen) {
+		parts.box.className += ' apc-full';
+	} else if (Array.isArray(specs.size)) {
+		parts.box.className += ' apc-non-full';
+		parts.box.style.width = specs.size[0];
+		parts.box.style.height = specs.size[1];
+	}
+	parts.box.appendChild(content);
 	if (specs.closeable) {
-		createClosingButton(container, box);
+		createClosingButton(parts.box, box);
 	}
 	return parts;
 }
@@ -97,8 +95,6 @@ class ApiceBox {
 	#id;
 	// Object containin the main box parts (area, header, body, footer)
 	#elements;
-	// element where the top element is attached 
-	#container;
 	// numeric indicator to determine the status of the box
 	#status; // 1=open 0=closed -1=detached
 
@@ -117,9 +113,10 @@ class ApiceBox {
 	 * @param target String with the selector to the element to append the box into it, or reference to its HTMLElement or Apice element
 	 */
 	appendTo(target) {
-		element.append(target, this.#elements.area);
-		this.#container = this.#elements.area.parentElement;
-		this.#status = (this.#container) ? 0 : -1;
+		element.append(target, this.#elements.box);
+		if (this.#status === -1) {
+			this.#status = 0;
+		}
 		return this;
 	}
 
@@ -127,40 +124,67 @@ class ApiceBox {
 	close() {
 		if (this.#status === 1) {
 			logger.info('Closing box. id={0}', this.#id);
-			this.#container.removeChild(this.#elements.area);
 			this.#status = 0;
-		}
-		return this;
-	}
-
-	/** Opens the current box */
-	open() {
-		if (this.#status === 0) {
-			this.#container.appendChild(this.#elements.area);
-			this.#status = 1;
+			this.#elements.box.style.display = 'none';
 		}
 		return this;
 	}
 
 	/**
+	 * Opens the current box and returns a promise that is executed after it has been opened
+	 * @param content Content to set (or omit this argument to maintain the original content set to the box)
+	 * @returns Promise fulfilled when the content is loaded and the box is opened
+	 */
+	open(content) {
+		return new Promise((resolve, reject) => {
+			var contentPromise;
+			if (content) {
+				contentPromise = this.content(content);
+			} else {
+				contentPromise = Promise.resolve();
+			}
+			if (!this.#status === -1) {
+				this.appendTo(document.body);
+			}
+			contentPromise.then(() => {
+				if (this.#status === 0) {
+					this.#status = 1;
+					this.#elements.box.style.display = 'block';
+					setTimeout(function () {
+						resolve(true);
+					}, 0);
+				} else {
+					resolve(false);
+				}
+			}).catch(ex => {
+				reject(ex);
+			});
+		});
+	}
+
+	/**
 	 * Renders a specificic content inside the box
 	 * @param content String with thec ontent to add, or reference to an HTMLElement, Apice Element or Promise to be fulfilled with the content
-	 * @returns 
+	 * @returns Promise to be fulfilled after the content has been loaded
 	 */
 	content(content) {
-		if (util.isPromise(content)) {
-			content.then(result => {
-				this.content(result);
-			}).catch(ex => {
-				this.close();
-				errorHandler.render(ex);
-			});
-		} else if (fragment.isFragment(content)) {
-			content.render(this.#elements.body);
-		} else {
-			this.#elements.body.content(content);
-		}
-		return this;
+		return new Promise((resolve, reject) => {
+			if (util.isPromise(content)) {
+				content.then(result => {
+					this.content(result);
+					resolve();
+				}).catch(ex => {
+					this.close();
+					errorHandler.render(ex);
+					reject();
+				});
+			} else if (fragment.isFragment(content)) {
+				content.render(this.#elements.body).then(resolve).catch(reject);
+			} else {
+				this.#elements.body.content(content);
+				resolve();
+			}
+		});
 	}
 }
 

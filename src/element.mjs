@@ -20,10 +20,13 @@ class ApiceElement {
 class SingleElement extends ApiceElement {
 	/** Reference to the DOM element being wrapped */
 	#element;
+	/** Attribute to store different internal state variables */
+	#scope;
 
 	constructor(value) {
 		super();
 		this.#element = value;
+		this.#scope = {};
 	}
 
 	/** Allows to determine if the instance is wrapping a valid DOM element */
@@ -233,6 +236,20 @@ class SingleElement extends ApiceElement {
 		}
 		return this;
 	}
+
+	/** Toggle if the element is displayed or not */
+	display(flag) {
+		if(flag === true) {
+			if(this.#scope.originalDisplay) {
+				this.#element.style.display = this.#scope.originalDisplay;
+			} else {
+				this.#element.style.display = 'block';
+			}
+		} else {
+			this.#scope.originalDisplay = this.#element.style.display;
+			this.#element.style.display = 'none';
+		}
+	}
 }
 
 /**
@@ -353,6 +370,12 @@ class MultipleElements extends ApiceElement {
 	/** See SingleElement */
 	setClass() {
 		this.#nodeCall('setClass', arguments);
+		return this;
+	}
+
+	/** See SingleElement */
+	display() {
+		this.#nodeCall('display', arguments);
 		return this;
 	}
 }
