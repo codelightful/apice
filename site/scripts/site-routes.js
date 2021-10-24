@@ -14,6 +14,8 @@ Apice.router.register('404', (hash) => {
 Apice.router.register('home', Apice.fragment('home')).asDefault();
 
 // A fragment name can be provided instead of a fragment implementation
+Apice.router.register('docs', 'docs');
+
 Apice.router.register('component/badge', 'badge');
 
 // A router can contain a function with a custom implementation, the function will be invoked whenever the route is matched
@@ -28,3 +30,5 @@ Apice.router.register('component/toast', () => {
 Apice.router.register('component/box', 'box');
 
 Apice.router.register('component/dialog', 'dialog');
+
+Apice.router.register('http', 'http');

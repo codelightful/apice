@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&display=swap');
 
 :root {
 	--samples-bg-color: #ffffff;
@@ -11,8 +11,8 @@
   }
 
 * {
-    font-family: 'Ubuntu', sans-serif;
-    font-weight: 300;
+	font-family: 'Cabin', sans-serif;
+    font-weight: 400;
 }
 
 body {
@@ -20,38 +20,178 @@ body {
     background-color: var(--samples-bg-color);
 }
 
-/* Navigation bar with a dark accent */
-nav.dark {
+/* Navigation bar */
+nav {
     background-color: var(--samples-primary-dark);
     color: var(--samples-primary-dark-text-color);
-    padding: 10px;
-	height: 50px;
+	height: 60px;
 }
-nav > h1 {
-    margin: 0;
-	line-height: 50px;
+nav * {
+	line-height: 60px;
+}
+nav h1 {
 	font-weight: 300;
-	font-size: 1.6;
+	font-size: 1.6rem;
+	margin: 0 40px 0 0;
 }
-
-.apc-hero {
+nav a {
+	color: #ffffff;
+	text-decoration: none;
+}
+nav > .apc-container {
+    padding-left: 20px;
+	padding-right: 20px;
 	display: flex;
 	flex-direction: row;
 }
-.apc-hero > .apc-content {
+
+.top-menu {
 	flex-grow: 1;
-	padding: 20px;
+	display: flex;
 }
-.apc-hero > .apc-content > .apc-header {
-	font-size: 3rem;
-	font-weight: 500;
-	padding: 10px;
+.top-menu > div {
+	margin-left: 10px;
+	margin-right: 10px;
 }
-.apc-hero > .apc-content > .apc-body {
-	font-size: 1.6rem;
-	padding: 10px;
+
+/* Top element to provide the main layout for the page content */
+.apc-container {
+	box-sizing: border-box;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
-.apc-hero > .apc-image {
+main.apc-container {
+	padding: 20px 20px;
+}
+
+/* Text highlighted with the primary color */
+.apc-primary-text {
+	color: var(--samples-primary-light);
+}
+
+/* Hero container */
+.apc-hero {
+	width: 100%;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap-reverse;
+	margin-left: auto;
+	margin-right: auto;
+}
+.apc-hero > div {
+	box-sizing: border-box;
+	flex-basis: 0;
+	flex-grow: 1;
 	flex-shrink: 1;
-	padding: 20px;
+}
+
+/* Content inside a hero */
+.apc-hero > .apc-content {
+	flex: none;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+/* Header content inside a hero */
+.apc-hero > .apc-content > .apc-header {
+	padding-bottom: 30px;
+	vertical-align: top;
+    font-weight: 500;
+}
+/* Main content inside a hero */
+.apc-hero > .apc-content > .apc-body {
+	padding-bottom: 30px;
+}
+/* Footer content inside a hero */
+.apc-hero > .apc-content > .apc-footer {
+	padding-top: 10px;
+	padding-bottom: 20px;
+}
+
+/* Container with the image inside a hero */
+.apc-hero > .apc-image {
+	font-size: 0;
+}
+.apc-hero > .apc-image img {
+	width: 100%;
+}
+
+/* Image with rounded corners */
+.apc-image-frame {
+	border: none;
+}
+.apc-image-frame > img {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+/* Specific hero styles for the main page */
+.apc-main-hero > .apc-content {
+	padding-right: 20px;
+}
+.apc-main-hero .apc-body {
+	color: #5a5a5a;
+}
+.apc-main-hero > .apc-image {
+	margin: 0 0 20px 20px;
+}
+.apc-main-hero .apc-image-frame {
+	border-radius: 20px;
+	overflow: hidden;
+}
+
+@media (max-width: 520px) {
+	.apc-container {
+		width: 100%;
+	}
+	.apc-hero > .apc-content {
+		padding-top: 0;
+		width: 100%;
+	}
+	.apc-hero > .apc-content > .apc-header {
+		font-size: 2.5rem;
+	}
+	.apc-hero > .apc-content > .apc-body {
+		font-size: 1.3rem;
+	}
+}
+@media (min-width: 521px) {
+	.apc-container {
+		width: 100%;
+	}
+	.apc-hero > .apc-content {
+		flex: none;
+		width: 66%;
+	}
+	.apc-hero > .apc-content > .apc-header {
+		font-size: 2.3rem;
+	}
+	.apc-hero > .apc-content > .apc-body {
+		font-size: 1.2rem;
+	}
+}
+@media (min-width: 720px) {
+	.apc-hero > .apc-content > .apc-header {
+		font-size: 2.5rem;
+	}
+	.apc-hero > .apc-content > .apc-body {
+		font-size: 1.3rem;
+	}
+}
+@media (min-width: 1080px) {
+	.apc-hero > .apc-content > .apc-header {
+		font-size: 3.5rem;
+	}
+	.apc-hero > .apc-content > .apc-body {
+		font-size: 1.6rem;
+	}
+}
+@media (min-width: 1366px) {
+	.apc-container {
+		width: 1300px;
+	}
+}
+@media (min-width: 1980px) {
 }

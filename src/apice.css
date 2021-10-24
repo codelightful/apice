@@ -1,45 +1,43 @@
 /*
-ffebee - Red extra light
-d5e6f5 - Blue extra light
-fff8e1 - Yellow extra light
-f2f8eb - Green extra light
-fff1e2 - Orange extra light
-
-f9c6cb - Red light
-61b3e6 - Blue light
-d8eac5 - Green light
-b2d58b - Green pale
-ffd7aa - Orange light
-
-da4453 - Red brilliant
-ed5565 - Red brilliant light
-128dda - Blue brilliant
-8cc152 - Green brilliant
-f68b42 - Orange brilliant
-ffce54 - Yellow brilliant
-
-a10202 - Red dark
-0e549a - Blue dark
-e65100 - Orange dark
-
-1a237e - Blue extra dark
-1b5e20 - Green extra dark
-993600 - Orange extra dark
-
-e8e8e8 - Gray extra light
-dddddd - Gray light
-cccccc - Gray medium
-888888 - Gray accent
-999999 - Button gray
-3a3a3a - Dark gray
-
 Z-Index
+-------------------------------------------------------------------------------
 -100-0 - Containers
 100-499 - Content
 500-599 - Masks / content overlays
 600-699 - Windows
 700-799 - Dialogs / Toasts
 */
+:root {
+	--apc-primary-dark: #2b3d67;
+	--apc-primary: #2b4c8b;
+	--apc-primary-medium: #456daa;
+	--apc-primary-light: #73b4e0;
+	--apc-primary-extra-light: #c1e6f4;
+	--apc-primary-dark-text: #fcfcfc;
+	--apc-primary-text: #ffffff;
+	--apc-primary-medium-text: #ffffff;
+	--apc-primary-light-text: #000000;
+	--apc-secondary-dark: #3a2d4b;
+	--apc-secondary: #524365;
+	--apc-secondary-light: #676094;
+	--apc-secondary-dark-text: #fcfcfc;
+	--apc-secondary-text: #ffffff;
+	--apc-secondary-light-text: #ffffff;
+	--apc-danger-dark: #bb2635;
+	--apc-danger: #da4453;
+	--apc-danger-light: #f9c6cb;
+	--apc-warn-dark: #d45e1a;
+	--apc-warn: #f68b42;
+	--apc-warn-light: #ffae62;
+	--apc-warn-pale: #fff1e2;
+	--apc-info-dark: #003d62;
+	--apc-info: #456daa;
+	--apc-info-light: #d5e6f5;
+	--apc-success-dark: #497916;
+	--apc-success: #8cc152;
+	--apc-success-light: #d8eac5;
+	--apc-success-pale: #f2f8eb;
+}
 
 /*===========================================================================*/
 @keyframes bounce-in {
@@ -137,7 +135,7 @@ Z-Index
 }
 
 /*===========================================================================*/
-/* General Elements */
+/* GENERAL ELEMENTS */
 /*===========================================================================*/
 /* Element with the default padding around */
 .apc-padded {
@@ -164,12 +162,12 @@ Z-Index
 .apc-badge > .apc-header {
     font-weight: 400;
     font-size: 1.2rem;
+	padding-bottom: 10px;
 }
 
 /* Body inside a badge */
 .apc-badge > .apc-body {
-    padding-top: 5px;
-	color: #000000;
+    color: #000000;
 }
 
 /* Footer inside a badge */
@@ -181,30 +179,30 @@ Z-Index
 
 /* Badge with an error message */
 .apc-badge.apc-error {
-    background-color: #f9c6cb;
-    border: solid 1px #f9c6cb;    
-    color: #a10202;
+    background-color: var(--apc-danger-light);
+    border: solid 1px var(--apc-danger-light);    
+    color: var(--apc-danger-dark);
 }
 
 /* Badge with a warning message */
 .apc-badge.apc-warn {
-    background-color: #ffd7aa;
-    border: solid 1px #ffd7aa;    
-    color: #993600;
+    background-color: var(--apc-warn-pale);
+    border: solid 1px var(--apc-warn-pale);    
+    color: var(--apc-warn-dark);
 }
 
 /* Badge with an informational message */
 .apc-badge.apc-info {
-    background-color: #d5e6f5;
-    border: solid 1px #d5e6f5;    
-    color: #0e549a;
+    background-color: var(--apc-info-light);
+    border: solid 1px var(--apc-info-light);    
+    color: var(--apc-info-dark);
 }
 
 /* Badge with a success message */
 .apc-badge.apc-success {
-    background-color: #d8eac5;
-    border: solid 1px #d8eac5;    
-    color: #1b5e20;
+    background-color: var(--apc-success-light);
+    border: solid 1px var(--apc-success-light);    
+    color: var(--apc-success-dark);
 }
 
 /* Container with the closing button inside a badge */
@@ -225,6 +223,7 @@ Z-Index
 	cursor: pointer;
 }
 
+/* Area with the icon inside a badge */
 .apc-badge > .apc-icon {
 	float: left;
 	height: 25px;
@@ -241,7 +240,7 @@ Z-Index
 }
 
 .apc-badge.apc-info > .apc-icon {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' width='350' height='350' viewBox='0 0 350 350' xml:space='preserve'%3E%3Cg id='icon' style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;' transform='translate(-1.9444444444444287 -1.9444444444444287) scale(3.89 3.89)' %3E%3Cpath d='M 45 0 C 20.187 0 0 20.187 0 45 c 0 24.813 20.187 45 45 45 c 24.813 0 45 -20.187 45 -45 C 90 20.187 69.813 0 45 0 z M 52.706 67.583 l -0.521 2.194 c -0.227 0.958 -0.938 1.736 -1.878 2.028 c -3.267 1.016 -6.733 1.262 -10.125 0.711 c -2.291 -0.373 -3.846 -2.532 -3.474 -4.823 l 3.067 -18.855 c 0.363 -2.232 -0.817 -4.315 -2.697 -5.247 c -1.175 -0.582 -1.805 -1.885 -1.502 -3.161 l 0.521 -2.194 c 0.227 -0.958 0.938 -1.736 1.878 -2.029 c 3.267 -1.016 6.733 -1.262 10.125 -0.711 c 2.291 0.373 3.846 2.532 3.474 4.823 l -3.067 18.855 c -0.363 2.232 0.817 4.315 2.697 5.247 C 52.379 65.004 53.008 66.307 52.706 67.583 z M 47.55 31.096 c -3.838 0 -6.95 -3.112 -6.95 -6.95 s 3.112 -6.95 6.95 -6.95 s 6.95 3.112 6.95 6.95 S 51.388 31.096 47.55 31.096 z' style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: %231a237e; fill-rule: nonzero; opacity: 1;' transform=' matrix(1 0 0 1 0 0) ' stroke-linecap='round' /%3E%3C/g%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' width='350' height='350' viewBox='0 0 350 350' xml:space='preserve'%3E%3Cg id='icon' style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;' transform='translate(-1.9444444444444287 -1.9444444444444287) scale(3.89 3.89)' %3E%3Cpath d='M 45 0 C 20.187 0 0 20.187 0 45 c 0 24.813 20.187 45 45 45 c 24.813 0 45 -20.187 45 -45 C 90 20.187 69.813 0 45 0 z M 52.706 67.583 l -0.521 2.194 c -0.227 0.958 -0.938 1.736 -1.878 2.028 c -3.267 1.016 -6.733 1.262 -10.125 0.711 c -2.291 -0.373 -3.846 -2.532 -3.474 -4.823 l 3.067 -18.855 c 0.363 -2.232 -0.817 -4.315 -2.697 -5.247 c -1.175 -0.582 -1.805 -1.885 -1.502 -3.161 l 0.521 -2.194 c 0.227 -0.958 0.938 -1.736 1.878 -2.029 c 3.267 -1.016 6.733 -1.262 10.125 -0.711 c 2.291 0.373 3.846 2.532 3.474 4.823 l -3.067 18.855 c -0.363 2.232 0.817 4.315 2.697 5.247 C 52.379 65.004 53.008 66.307 52.706 67.583 z M 47.55 31.096 c -3.838 0 -6.95 -3.112 -6.95 -6.95 s 3.112 -6.95 6.95 -6.95 s 6.95 3.112 6.95 6.95 S 51.388 31.096 47.55 31.096 z' style='stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: %232b3d67; fill-rule: nonzero; opacity: 1;' transform=' matrix(1 0 0 1 0 0) ' stroke-linecap='round' /%3E%3C/g%3E%3C/svg%3E");
 }
 
 .apc-badge.apc-success > .apc-icon {
@@ -269,6 +268,7 @@ Z-Index
 /*===========================================================================*/
 /* ICONS */
 /*===========================================================================*/
+/* Standard icon */
 .apc-icon {
     background-position: top;
     background-size: contain;
@@ -289,6 +289,7 @@ Z-Index
 	z-index: 500;
 }
 
+/* Adds the animation to open the mask */
 .apc-mask.apc-open {
 	animation-name: half-fade-in;
     animation-duration: 200ms;
@@ -296,6 +297,7 @@ Z-Index
     animation-fill-mode: forwards;
 }
 
+/* Adds the animation to close the mask */
 .apc-mask.apc-closed {
 	animation-name: half-fade-out;
     animation-duration: 300ms;
@@ -306,6 +308,7 @@ Z-Index
 /*===========================================================================*/
 /* DIALOGS */
 /*===========================================================================*/
+/* Style applicable to all the dialogs top containers */
 .apc-dialog {
 	position: absolute;
 	top: 50%;
@@ -340,17 +343,20 @@ Z-Index
     animation-fill-mode: forwards;
 }
 
+/* Dialog header */
 .apc-dialog > .apc-header {
-	font-size: 0.9rem;
+	font-size: 1.1rem;
 	font-weight: bolder;
 	padding: 5px 10px;
 }
 
+/* Dialog content area */
 .apc-dialog > .apc-body {
 	padding: 10px;
 	flex-grow: 1;
 }
 
+/* Dialog footer */
 .apc-dialog > .apc-footer {
 	padding: 10px 10px 15px 10px;
 }
@@ -382,44 +388,73 @@ Z-Index
 	background-color: #ffebee;
 }
 .apc-dialog.apc-error > .apc-header {
-	color: #a10202;
-	background-color: #f9c6cb;
+	color: var(--apc-danger-dark);
+	background-color: var(--apc-danger-light);
 }
 .apc-dialog.apc-error .apc-button.apc-primary {
-	background-color: #da4453;
-	color: #ffebee;
+	background-color: var(--apc-danger);
+	color: #ffffff;
+}
+.apc-dialog.apc-error .apc-button.apc-primary:hover {
+	background-color: var(--apc-danger-dark);
+}
+.apc-dialog.apc-error .apc-button.apc-primary:active {
+	background-color: var(--apc-danger-light);
+	color: var(--apc-danger-dark);
 }
 
 .apc-dialog.apc-warn {
-	background-color: #fff1e2;
+	background-color: var(--apc-warn-pale);
 }
 .apc-dialog.apc-warn > .apc-header {
-	color: #f68b42;
-	background-color: #ffd7aa;
+	color: var(--apc-warn-dark);
+	background-color: var(--apc-warn-light);
 }
 .apc-dialog.apc-warn .apc-button.apc-primary {
-	background-color: #f68b42;
-	color: #ffebee;
+	background-color: var(--apc-warn);
+	color: #ffffff;
+}
+.apc-dialog.apc-warn .apc-button.apc-primary:hover {
+	background-color: var(--apc-warn-dark);
+}
+.apc-dialog.apc-warn .apc-button.apc-primary:active {
+	background-color: var(--apc-warn-light);
 }
 
 .apc-dialog.apc-info {
-	background-color: #d5e6f5;
+	background-color: var(--apc-info-light);
 }
 .apc-dialog.apc-info > .apc-header {
-	color: #1a237e;
-	background-color: #61b3e6;
+	color: var(--apc-primary-text);
+	background-color: var(--apc-info);
+}
+.apc-dialog.apc-info .apc-button.apc-primary {
+	background-color: var(--apc-info);
+	color: #ffffff;
+}
+.apc-dialog.apc-info .apc-button.apc-primary:hover {
+	background-color: var(--apc-info-dark);
+}
+.apc-dialog.apc-info .apc-button.apc-primary:active {
+	background-color: var(--apc-info);
 }
 
 .apc-dialog.apc-success {
-	background-color: #f2f8eb;
+	background-color: var(--apc-success-pale);
 }
 .apc-dialog.apc-success > .apc-header {
-	color: #1b5e20;
-	background-color: #d8eac5;
+	color: var(--apc-success-dark);
+	background-color: var(--apc-success-light);
 }
 .apc-dialog.apc-success .apc-button.apc-primary {
-	background-color: #8cc152;
-	color: #fff8e1;
+	background-color: var(--apc-success);
+	color: var(--apc-success-light);
+}
+.apc-dialog.apc-success .apc-button.apc-primary:hover {
+	background-color: var(--apc-success-dark);
+}
+.apc-dialog.apc-success .apc-button.apc-primary:active {
+	background-color: var(--apc-success);
 }
 
 /*===========================================================================*/
@@ -475,8 +510,8 @@ Z-Index
 }
 
 .apc-toast.apc-error {
-    border-color: #da4453;
-    background-color: #da4453;
+    border-color: var(--apc-danger);
+    background-color: var(--apc-danger);
     color: #ffffff;
 }
 .apc-toast.apc-error > .apc-icon {
@@ -484,8 +519,8 @@ Z-Index
 }
 
 .apc-toast.apc-warn {
-    border-color: #f68b42;
-    background-color: #f68b42;
+    border-color: var(--apc-warn);
+    background-color: var(--apc-warn);
     color: #ffffff;
 }
 .apc-toast.apc-warn > .apc-icon {
@@ -493,8 +528,8 @@ Z-Index
 }
 
 .apc-toast.apc-info {
-    border-color: #128dda;
-    background-color: #128dda;
+    border-color: var(--apc-info);
+    background-color: var(--apc-info);
     color: #ffffff;
 }
 .apc-toast.apc-info > .apc-icon {
@@ -502,8 +537,8 @@ Z-Index
 }
 
 .apc-toast.apc-success {
-    border-color: #8cc152;
-    background-color: #8cc152;
+    border-color: var(--apc-success);
+    background-color: var(--apc-success);
     color: #ffffff;
 }
 .apc-toast.apc-success > .apc-icon {
@@ -600,16 +635,19 @@ Z-Index
     margin-left: 5px;
 }
 
+/* Buttons with the apice look and feel */
 .apc-button {
     border: solid;
-    border-radius: 10px;
+    border-radius: 5px;
 	border-color: transparent;
-    padding: 5px 10px;
+    padding: 5px 15px;
     background-color: #999999;
     color: #3a3a3a;
     cursor: pointer;
 	font-size: 0.95rem;
-	font-weight: bolder;
+}
+a.apc-button {
+	text-decoration: none;
 }
 .apc-button:hover {
     background-color: #494949;
@@ -620,8 +658,24 @@ Z-Index
     color: #ffffff;
 }
 
+/* Primary (highlighted button) */
 .apc-button.apc-primary {
-	background-color: #61b3e6;
+	background-color: var(--apc-primary-medium);
+	color: var(--apc-primary-medium-text);
+}
+.apc-button.apc-primary:hover {
+	background-color: var(--apc-primary-dark);
+}
+.apc-button.apc-primary:active {
+	background-color: var(--apc-primary-light);
+	color: var(--apc-primary-light-text);
+
+}
+
+/* Large button */
+.apc-button.apc-lg {
+	font-size: 1.5rem;
+	padding: 10px 20px;
 }
 
 /*===========================================================================*/
