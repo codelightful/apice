@@ -90,7 +90,7 @@ class ApiceFragment {
 				// TODO: add a response interceptor
 				// FIXME: does this really needs a settimeout
 				//setTimeout(() => {
-				target.content(response);
+				target.content(response.content);
 				this.#runController().then(resolve).catch(reject);
 				//}, 0);
 			}).catch((ex) => {

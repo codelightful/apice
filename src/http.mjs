@@ -1,7 +1,11 @@
 import errorHandler from './errorHandler.mjs';
+import util from './util.mjs';
+import logging from './logging.mjs';
+import random from './random.mjs';
 
 const $module = {};
 const $moduleName = 'apice.http';
+const logger = logging.getLogger('apice.http');
 
 /** Creates the underlying XMLHTTP object used to execute ajax calls */
 function createXmlHttp() {
@@ -20,14 +24,58 @@ function createXmlHttp() {
 	}
 }
 
+/**
+ * Internal method to extract the response headers associated with a particular XMLHTTP request
+ * @param request Instance of the XMLHTTP that initiated the request
+ * @returns Object with all the headers as attributes
+ */
+function getResponseHeaders(request) {
+	const headers = {};
+	let rawHeaders = request.getAllResponseHeaders();
+	if(rawHeaders) {
+		rawHeaders = rawHeaders.split('\r\n');
+		for(let idx=0; idx < rawHeaders.length; idx++) {
+			const parts = rawHeaders[idx].split(':');
+			// NOTE: on older browsers the header name can have mixed case, on recent browsers it is only lowercase
+			headers[util.trim(parts[0]).toLowerCase()] = util.trim(parts[1]);
+		}
+	}
+	return headers;
+}
+
+/**
+ * Internal method to parse a rsponse received from an HTTP call
+ * @param request Reference to the XMLHTTP request
+ * @param response Response to parse
+ * @param reject Method to invoke in case of error
+ * @param options Options received that allows to determine the way to parse the response
+ */
+function parseResponse(request, response, reject, options) {
+	if(options.output === 'json' || (!options.output && response['content-type'] === 'application/json')) {
+		try {
+			response.content = JSON.parse(request.content);
+		} catch(ex) {
+			logger.error('An error occurred parsing a HTTP JSON content. request={0}\r\nContent:\r\n{1}\r\n', request.guid, response.content, ex);
+			reject(errorHandler.create({ code: 'apice.http.json_parse_error', cause: ex }));
+		}
+	}
+}
+
 /** Create a request object to execute ajax calls in a crossbrowser approach */
-function createRequest(resolve, reject) {
+function createRequest(resolve, reject, options) {
 	const request = createXmlHttp();
+	request.guid = random.shortId();
 	request.onreadystatechange = function () {
 		if (request.readyState == 4 || request.readyState === 'complete') {
 			if (request.status == 200) {
-				resolve(request.responseText);
+				logger.trace('Successful HTTP response received. request={0}', request.guid);
+				const response = {};
+				response.headers = getResponseHeaders(request);
+				response.content = request.responseText;
+				parseResponse(request, response, reject, options);
+				resolve(response);
 			} else {
+				logger.trace('Failed HTTP response. request={0} status={1}', request.guid, request.status);
 				reject(errorHandler.createHttpError(request.status));
 			}
 		}
@@ -46,6 +94,7 @@ function createRequest(resolve, reject) {
  */
 $module.request = function (url, options) {
 	if (typeof (url) !== 'string' || !url) {
+		logger.error('Unable to execute an HTTP request without an URL');
 		return Promise.reject('apice.http.null_url');
 	}
 	if (!options) {
@@ -56,7 +105,8 @@ $module.request = function (url, options) {
 	}
 	// TODO: add headers
 	return new Promise((resolve, reject) => {
-		const request = createRequest(resolve, reject);
+		const request = createRequest(resolve, reject, options);
+		logger.debug('Triggering http request. request={0} url={1}', request.guid, url);
 		request.open(options.method, url, options.async !== false);
 		if (options.method === 'GET' || !options.data) {
 			request.send();
