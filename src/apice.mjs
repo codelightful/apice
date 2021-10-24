@@ -11,9 +11,9 @@ import router from './router.mjs';
 import error from './errorHandler.mjs';
 import ui from './components/ui.mjs';
 import form from './components/form.mjs';
+import currentVersion from './version.mjs';
 
 const $scope = {};
-$scope.version = { major: 0, minor: 1, patch: 5 };
 console.log(`%cApice Framework ${version()}`, 'color: #64dd17;');
 
 /**
@@ -24,12 +24,12 @@ console.log(`%cApice Framework ${version()}`, 'color: #64dd17;');
 function version() {
 	if (arguments[0] === true) {
 		return {
-			major: $scope.version.major,
-			minor: $scope.version.minor,
-			patch: $scope.version.patch
+			major: currentVersion.major,
+			minor: currentVersion.minor,
+			patch: currentVersion.patch
 		};
 	}
-	return 'v' + $scope.version.major + '.' + $scope.version.minor + '.' + $scope.version.patch;
+	return 'v' + currentVersion.major + '.' + currentVersion.minor + '.' + currentVersion.patch;
 }
 
 /**
