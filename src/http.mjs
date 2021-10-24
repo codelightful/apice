@@ -53,7 +53,7 @@ function getResponseHeaders(request) {
 function parseResponse(request, response, reject, options) {
 	if(options.output === 'json' || (!options.output && response['content-type'] === 'application/json')) {
 		try {
-			response.content = JSON.parse(request.content);
+			response.content = JSON.parse(response.content);
 		} catch(ex) {
 			logger.error('An error occurred parsing a HTTP JSON content. request={0}\r\nContent:\r\n{1}\r\n', request.guid, response.content, ex);
 			reject(errorHandler.create({ code: 'apice.http.json_parse_error', cause: ex }));
