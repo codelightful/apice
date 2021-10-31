@@ -1,4 +1,5 @@
 'use strict';
+
 import logging from './logging.mjs';
 import util from './util.mjs';
 import events from './events.mjs';
@@ -11,9 +12,9 @@ import router from './router.mjs';
 import error from './errorHandler.mjs';
 import ui from './components/ui.mjs';
 import form from './components/form.mjs';
+import asynchronous from './asynchronous.mjs';
 import currentVersion from './version.mjs';
 
-const $scope = {};
 console.log(`%cApice Framework ${version()}`, 'color: #64dd17;');
 
 /**
@@ -40,4 +41,19 @@ function ready(callback) {
 	events.documentReady(callback);
 }
 
-export default { version, ready, logging, util, events, element, cookies, http, controller, fragment, router, error, ui, form };
+export default { 
+	version, ready, 
+	logging, 
+	util, 
+	events, 
+	element, 
+	cookies, 
+	http, 
+	controller, 
+	fragment, 
+	router, 
+	error, 
+	ui, 
+	form, 
+	asynchronous 
+};

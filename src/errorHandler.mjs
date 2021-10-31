@@ -74,7 +74,7 @@ class ErrorHandler {
 		if (this.#code) {
 			entryText += `\n-> (c) ${this.#code}`;
 		}
-		if(this.#cause) {
+		if (this.#cause) {
 			entryText += this.#getCauseLog(this.#cause);
 		}
 		logger.error(entryText);
@@ -85,7 +85,7 @@ class ErrorHandler {
 	 * @param selector String with the selector to render the error on it or reference to a DOM element
 	 */
 	render(selector) {
-		if(this.#rendered) {
+		if (this.#rendered) {
 			return;
 		}
 		this.#rendered = true;

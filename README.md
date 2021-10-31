@@ -1,5 +1,4 @@
 # Apice
-==================================================
 A swiss army knife to develop the front-end for enterprise web applications
 
 The framework that is intended to ease your front-end work without deviating you from the standards and giving you the control to use it in collaboration with your favorite CSS framework.
