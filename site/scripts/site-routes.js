@@ -32,3 +32,5 @@ Apice.router.register('component/box', 'box');
 Apice.router.register('component/dialog', 'dialog');
 
 Apice.router.register('http', 'http');
+
+Apice.router.register('semaphore', 'semaphore');

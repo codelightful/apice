@@ -21,8 +21,10 @@ Apice.fragment.register('box', './site/fragments/components/site-box.html', 'box
 
 Apice.fragment.register('dialog', './site/fragments/components/site-dialog.html', 'dialog');
 
+Apice.fragment.register('http', './site/fragments/site-http.html', 'http');
+
+Apice.fragment.register('semaphore', './site/fragments/site-semaphore.html', 'semaphore');
+
 Apice.fragment.register('short', './site/fragments/content-short.html');
 
 Apice.fragment.register('long', './site/fragments/content-long.html');
-
-Apice.fragment.register('http', './site/fragments/site-http.html', 'http');
