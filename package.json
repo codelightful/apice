@@ -2,7 +2,7 @@
   "name": "apice",
   "version": "0.1.6",
   "description": "DOM based front-end utility framework",
-  "repository": "https://github.com/codelightful/apice/tree/v0.1.5",
+  "repository": "https://github.com/codelightful/apice",
   "main": "./src/apice.mjs",
   "scripts": {
     "start": "npm-run-all --parallel watch serve",
