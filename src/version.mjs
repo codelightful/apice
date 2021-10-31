@@ -1,1 +1,1 @@
-export default { 'major': 0, 'minor': 1, 'patch': 6 };
+export default { 'major': 0, 'minor': 1, 'patch': 7 };
