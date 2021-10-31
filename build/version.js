@@ -35,11 +35,7 @@ async function updateJson() {
 		return;
 	}
 	const parts = version.split('.');
-	const content = 'export default ' + JSON.stringify({ 
-		major: parseInt(parts[0]), 
-		minor: parseInt(parts[1]), 
-		patch: parseInt(parts[2])
-	});
+	const content = `export default { 'major': ${parts[0]}, 'minor': ${parts[1]}, 'patch': ${parts[2]} };`; 
 	fs.writeFile('./src/version.mjs', content, 'utf-8');
 }
 
