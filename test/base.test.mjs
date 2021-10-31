@@ -3,6 +3,11 @@ await import('./setup/initialize.mjs');
 const apice = (await import('../src/apice.mjs')).default;
 
 describe('Base Test', function() {
+	it('Package version can be obtained from Node', function() {
+		const packageVersion = process.env.npm_package_version;
+		assert.ok(process.env.npm_package_version);
+	});
+
 	it('Checking string version', function() {
 		const version = apice.version();
 		assert.equal(version, `v${process.env.npm_package_version}`, 'Incorrect version value');
