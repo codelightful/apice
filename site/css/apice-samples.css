@@ -45,6 +45,7 @@ nav > .apc-container {
 	flex-direction: row;
 }
 
+/* Container with the site menu at the top area */
 .top-menu {
 	flex-grow: 1;
 	display: flex;
@@ -52,6 +53,10 @@ nav > .apc-container {
 .top-menu > div {
 	margin-left: 10px;
 	margin-right: 10px;
+}
+
+#contentArea {
+	padding-top: 30px;
 }
 
 /* Top element to provide the main layout for the page content */
