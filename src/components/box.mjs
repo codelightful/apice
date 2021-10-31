@@ -3,12 +3,14 @@ import element from '../element.mjs';
 import logging from '../logging.mjs';
 import fragment from '../fragment.mjs';
 import util from '../util.mjs';
+import asynchronous from '../asynchronous.mjs';
 import errorHandler from '../errorHandler.mjs';
 
 const $moduleName = 'apice.ui.box';
 const $module = {};
 const logger = logging.getLogger($moduleName);
 
+/** Internal utility method to create DIVs */
 function createDiv(className, id) {
 	const divElem = document.createElement('div');
 	divElem.className = className;
@@ -68,8 +70,8 @@ function createFooter(specs, container) {
 
 /** Creates the container of an ApiceBox and its internal areas */
 function createBoxContainer(specs, box) {
-	const content = createDiv('apc-box-content');
 	const parts = {};
+	const content = createDiv('apc-box-content');
 	parts.header = createHeader(specs, content);
 	parts.body = createBody(content);
 	parts.footer = createFooter(specs, content);
@@ -97,6 +99,9 @@ class ApiceBox {
 	#elements;
 	// numeric indicator to determine the status of the box
 	#status; // 1=open 0=closed -1=detached
+	// reference to a semaphore that is fulfilled when a delayed content is completed
+	// allows to avoid opening the box if there is content being loaded
+	#semaphore;
 
 	constructor(specs) {
 		if (!specs.id) {
@@ -106,6 +111,12 @@ class ApiceBox {
 		logger.info('Creating box. id={0}', specs.id);
 		this.#status = -1;
 		this.#elements = createBoxContainer(specs, this);
+		this.#semaphore = asynchronous.semaphore();
+	}
+
+	/** Allows to obtain the identifier of the current box top container */
+	get id() {
+		return this.#id;
 	}
 
 	/**
@@ -122,11 +133,9 @@ class ApiceBox {
 
 	/** Closes the current box */
 	close() {
-		if (this.#status === 1) {
-			logger.info('Closing box. id={0}', this.#id);
-			this.#status = 0;
-			this.#elements.box.style.display = 'none';
-		}
+		logger.info('Closing box. id={0}', this.#id);
+		this.#status = 0;
+		this.#elements.box.style.display = 'none';
 		return this;
 	}
 
@@ -137,25 +146,19 @@ class ApiceBox {
 	 */
 	open(content) {
 		return new Promise((resolve, reject) => {
-			var contentPromise;
 			if (content) {
-				contentPromise = this.content(content);
-			} else {
-				contentPromise = Promise.resolve();
+				this.#semaphore.wait(this.content(content));
 			}
+			// if the box is detached then attach it to the body
 			if (!this.#status === -1) {
 				this.appendTo(document.body);
 			}
-			contentPromise.then(() => {
-				if (this.#status === 0) {
-					this.#status = 1;
-					this.#elements.box.style.display = 'block';
-					setTimeout(function () {
-						resolve(true);
-					}, 0);
-				} else {
-					resolve(false);
-				}
+			this.#semaphore.then(() => {
+				this.#status = 1;
+				this.#elements.box.style.display = 'block';
+				setTimeout(function () {
+					resolve();
+				}, 0);
 			}).catch(ex => {
 				reject(ex);
 			});
@@ -168,23 +171,25 @@ class ApiceBox {
 	 * @returns Promise to be fulfilled after the content has been loaded
 	 */
 	content(content) {
-		return new Promise((resolve, reject) => {
-			if (util.isPromise(content)) {
+		if (util.isPromise(content)) {
+			logger.debug('A promise content has been received for a box. id={0}', this.#id);
+			return this.#semaphore.wait(
 				content.then(result => {
-					this.content(result);
-					resolve();
+					logger.debug('Content promise fulfilled for a box. id={0}', this.#id);
+					this.#semaphore.wait(this.content(result));
 				}).catch(ex => {
-					this.close();
-					errorHandler.render(ex);
-					reject();
-				});
-			} else if (fragment.isFragment(content)) {
-				content.render(this.#elements.body).then(resolve).catch(reject);
-			} else {
-				this.#elements.body.content(content);
-				resolve();
-			}
-		});
+					logger.error('An error has occurred fulfilling a box content promise. id={0}', this.#id, ex);
+					throw errorHandler.render(ex, this.#elements.body);
+				})
+			);
+		} else if (fragment.isFragment(content)) {
+			logger.debug('A fragment content has been received for a box. id={0}', this.#id);
+			return this.#semaphore.wait(content.render(this.#elements.body));
+		} else {
+			logger.debug('A raw content has been received for a box. id={0}', this.#id);
+			this.#elements.body.content(content);
+			return this.#semaphore.wait(Promise.resolve());
+		}
 	}
 }
 

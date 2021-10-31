@@ -519,6 +519,7 @@ Z-Index
 	box-sizing: border-box;
 	max-width: 100% !important;
 	max-height: 100% !important;
+	display: none;
 }
 
 /* Style to define the look&feel for a fullscreeen box */

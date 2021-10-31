@@ -12,7 +12,7 @@
     "test": "mocha",
     "coverage": "c8 mocha",
     "lint": "eslint ./src/**/**.mjs",
-    "version": "npm-run-all version-sync test build && git add --all",
+    "version": "npm-run-all lint version-sync test build && git add --all",
     "release-patch": "npm version patch",
     "version-sync": "node ./build/version.js sync"
   },
