@@ -1,6 +1,7 @@
 import logging from './logging.mjs';
 import random from './random.mjs';
 import element from './element.mjs';
+import toast from './components/toast.mjs';
 
 const $module = {};
 
@@ -16,6 +17,8 @@ class ErrorHandler {
 	#code
 	// The unique error number used to correlate any error message in the UI with the entries in the log
 	#guid
+	// boolean value to determine if the error was already rendered, to avoid double rendering when handling promise rejections
+	#rendered;
 
 	constructor(specs) {
 		this.#guid = random.guid();
@@ -23,6 +26,7 @@ class ErrorHandler {
 		this.#cause = specs.cause;
 		this.#module = specs.module;
 		this.#code = specs.code;
+		this.#rendered = false;
 	}
 
 	/** Allows to obtain the unique value that identify this error occurrence */
@@ -81,10 +85,14 @@ class ErrorHandler {
 	 * @param selector String with the selector to render the error on it or reference to a DOM element
 	 */
 	render(selector) {
+		if(this.#rendered) {
+			return;
+		}
+		this.#rendered = true;
 		this.log();
 		var target = element(selector);
 		if (!target) {
-			Apice.ui.toast.error(`${this.message}<div>${this.#guid}</div>`);
+			toast.error(`${this.message}<div>${this.#guid}</div>`);
 			return;
 		}
 		target.content(`<div class="apc-badge apc-error">\
@@ -135,6 +143,7 @@ $module.render = function (err, selector) {
 		err = $module.create(err);
 	}
 	err.render(selector);
+	return err;
 };
 
 /** Represents an HTTP error */
